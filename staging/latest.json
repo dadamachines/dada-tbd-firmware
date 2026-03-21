@@ -1,0 +1,16 @@
+{
+  "tag": "staging-490ce5f2713ccd7dcd02bfc6861c8324cc9bd9bb",
+  "channel": "staging",
+  "timestamp": "2026-03-21T22:48:50Z",
+  "files": {
+    "unified": "staging/p4/dada-tbd-16-staging-490ce5f2713ccd7dcd02bfc6861c8324cc9bd9bb-unified.bin",
+    "p4": "staging/p4/ctag-tbd.bin",
+    "bootloader": "staging/p4/bootloader.bin",
+    "partition_table": "staging/p4/partition-table.bin",
+    "ota_data": "staging/p4/ota_data_initial.bin",
+    "sdcard": "staging/p4/tbd-sd-card.zip",
+    "hash": "staging/p4/tbd-sd-card-hash.txt",
+    "tusb_msc": "staging/p4/tusb_msc.bin",
+    "pico": "staging/pico/dada-tbd-16-staging-490ce5f2713ccd7dcd02bfc6861c8324cc9bd9bb-pico.uf2"
+  }
+}
