@@ -48,19 +48,32 @@ jobs:
           cp -f incoming/build/tbd-sd-card.zip        "$CHANNEL/p4/" 2>/dev/null || true
           cp -f incoming/build/tbd-sd-card-hash.txt   "$CHANNEL/p4/" 2>/dev/null || true
 
-          # Unified image (find by glob pattern)
+          # Unified image (versioned name from build)
           find incoming/ -name '*-unified.bin' -exec cp -f {} "$CHANNEL/p4/" \; 2>/dev/null || true
 
+          # Create versioned pico copy (source file stays for future releases)
+          PICO_NAME="dada-tbd-16-${TAG}-pico.uf2"
+          if [ -f "$CHANNEL/pico/ctag-tbd-pico.uf2" ]; then
+            cp -f "$CHANNEL/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
+          fi
+
           # Write channel manifest
+          UNIFIED_NAME=$(find incoming/ -name '*-unified.bin' -printf '%f' 2>/dev/null || basename $(find incoming/ -name '*-unified.bin') 2>/dev/null || echo '')
           cat > "$CHANNEL/latest.json" << EOF
           {
             "tag": "$TAG",
             "channel": "$CHANNEL",
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "files": {
+              "unified": "$CHANNEL/p4/$UNIFIED_NAME",
               "p4": "$CHANNEL/p4/ctag-tbd.bin",
+              "bootloader": "$CHANNEL/p4/bootloader.bin",
+              "partition_table": "$CHANNEL/p4/partition-table.bin",
+              "ota_data": "$CHANNEL/p4/ota_data_initial.bin",
               "sdcard": "$CHANNEL/p4/tbd-sd-card.zip",
-              "hash": "$CHANNEL/p4/tbd-sd-card-hash.txt"
+              "hash": "$CHANNEL/p4/tbd-sd-card-hash.txt",
+              "tusb_msc": "$CHANNEL/p4/tusb_msc.bin",
+              "pico": "$CHANNEL/pico/$PICO_NAME"
             }
           }
           EOF
