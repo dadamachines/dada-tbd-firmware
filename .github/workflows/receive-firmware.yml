@@ -64,10 +64,14 @@ jobs:
 
           # Write channel manifest
           UNIFIED_NAME=$(find incoming/ -name '*-unified.bin' -printf '%f' 2>/dev/null || basename $(find incoming/ -name '*-unified.bin') 2>/dev/null || echo '')
+          # Extract MAJOR.MINOR from tag for compatibility range
+          # v0.4.1 → 0.4, staging-abc123 → staging, feature-test-foo-abc123 → feature-test-foo
+          COMPAT_RANGE=$(echo "$TAG" | sed -E 's/^v?([0-9]+\.[0-9]+)\..*/\1/' )
           cat > "$CHANNEL/latest.json" << EOF
           {
             "tag": "$TAG",
             "channel": "$CHANNEL",
+            "compatRange": "$COMPAT_RANGE",
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "files": {
               "unified": "$CHANNEL/p4/$UNIFIED_NAME",
