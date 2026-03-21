@@ -1,0 +1,71 @@
+# Receive firmware from ctag-tbd CI and commit to the appropriate channel.
+# Called by the main repo's build workflows via repository_dispatch.
+name: Receive Firmware
+
+on:
+  repository_dispatch:
+    types: [firmware-update]
+
+permissions:
+  contents: write
+
+jobs:
+  receive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download firmware artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.event.client_payload.artifact_name }}
+          path: incoming/
+          github-token: ${{ github.event.client_payload.token }}
+          repository: dadamachines/ctag-tbd
+          run-id: ${{ github.event.client_payload.run_id }}
+
+      - name: Place files in channel directory
+        run: |
+          CHANNEL="${{ github.event.client_payload.channel }}"
+          TAG="${{ github.event.client_payload.tag }}"
+          echo "Channel: $CHANNEL  Tag: $TAG"
+
+          mkdir -p "$CHANNEL/p4"
+
+          # P4 firmware files
+          cp -f incoming/build/ctag-tbd.bin          "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/bootloader/bootloader.bin "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/partition_table/partition-table.bin "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/ota_data_initial.bin   "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/tbd-sd-card.zip        "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/tbd-sd-card-hash.txt   "$CHANNEL/p4/" 2>/dev/null || true
+
+          # Unified image (find by glob pattern)
+          find incoming/ -name '*-unified.bin' -exec cp -f {} "$CHANNEL/p4/" \; 2>/dev/null || true
+
+          # Write channel manifest
+          cat > "$CHANNEL/latest.json" << EOF
+          {
+            "tag": "$TAG",
+            "channel": "$CHANNEL",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "files": {
+              "p4": "$CHANNEL/p4/ctag-tbd.bin",
+              "sdcard": "$CHANNEL/p4/tbd-sd-card.zip",
+              "hash": "$CHANNEL/p4/tbd-sd-card-hash.txt"
+            }
+          }
+          EOF
+
+          rm -rf incoming/
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          CHANNEL="${{ github.event.client_payload.channel }}"
+          TAG="${{ github.event.client_payload.tag }}"
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update $CHANNEL channel — $TAG"
+          git push
