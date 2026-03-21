@@ -1,5 +1,7 @@
-# Receive firmware from ctag-tbd CI and commit to the appropriate channel.
-# Called by the main repo's build workflows via repository_dispatch.
+# Receive firmware from ctag-tbd CI, commit to the appropriate channel,
+# and deploy to GitHub Pages in the same workflow.
+# (GITHUB_TOKEN pushes don't trigger other workflows, so Pages deploy
+#  must happen here — not in a separate push-triggered workflow.)
 name: Receive Firmware
 
 on:
@@ -8,6 +10,12 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   receive:
@@ -69,3 +77,19 @@ jobs:
           git diff --cached --quiet && echo "No changes" && exit 0
           git commit -m "Update $CHANNEL channel — $TAG"
           git push
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy-pages:
+    needs: receive
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
