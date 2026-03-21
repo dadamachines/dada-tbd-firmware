@@ -52,9 +52,14 @@ jobs:
           find incoming/ -name '*-unified.bin' -exec cp -f {} "$CHANNEL/p4/" \; 2>/dev/null || true
 
           # Create versioned pico copy (source file stays for future releases)
+          mkdir -p "$CHANNEL/pico"
           PICO_NAME="dada-tbd-16-${TAG}-pico.uf2"
           if [ -f "$CHANNEL/pico/ctag-tbd-pico.uf2" ]; then
             cp -f "$CHANNEL/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
+          elif [ -f "stable/pico/ctag-tbd-pico.uf2" ]; then
+            # New channel — seed from stable pico firmware
+            cp -f "stable/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/ctag-tbd-pico.uf2"
+            cp -f "stable/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
           fi
 
           # Write channel manifest
