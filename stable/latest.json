@@ -1,10 +1,10 @@
 {
-  "tag": "v0.4.0",
+  "tag": "v0.4.1",
   "channel": "stable",
-  "timestamp": "2026-03-21T00:00:00Z",
-  "note": "Seed — P4 firmware not yet published via CI. tusb_msc.bin and pico .uf2 are static.",
+  "timestamp": "2026-03-21T20:23:17Z",
   "files": {
-    "tusb_msc": "stable/p4/tusb_msc.bin",
-    "pico": "stable/pico/ctag-tbd-pico.uf2"
+    "p4": "stable/p4/ctag-tbd.bin",
+    "sdcard": "stable/p4/tbd-sd-card.zip",
+    "hash": "stable/p4/tbd-sd-card-hash.txt"
   }
 }
