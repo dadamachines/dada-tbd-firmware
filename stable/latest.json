@@ -11,6 +11,7 @@
     "sdcard": "stable/p4/dada-tbd-sd.zip",
     "hash": "stable/p4/dada-tbd-sd-hash.txt",
     "tusb_msc": "stable/p4/tusb_msc.bin",
-    "pico": "stable/pico/dada-tbd-16-v0.4.1-pico.uf2"
-  }
+    "pico": "stable/pico/dada-tbd-16-v0.0.2-test-pico.uf2"
+  },
+  "picoVersion": "v0.0.2-test"
 }
