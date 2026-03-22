@@ -1,4 +1,4 @@
-# Receive firmware from ctag-tbd CI, commit to the appropriate channel,
+# Receive firmware from dada-tbd CI, commit to the appropriate channel,
 # and deploy to GitHub Pages in the same workflow.
 # (GITHUB_TOKEN pushes don't trigger other workflows, so Pages deploy
 #  must happen here — not in a separate push-triggered workflow.)
@@ -41,25 +41,30 @@ jobs:
           mkdir -p "$CHANNEL/p4"
 
           # P4 firmware files
-          cp -f incoming/build/ctag-tbd.bin          "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/dada-tbd.bin          "$CHANNEL/p4/" 2>/dev/null || true
           cp -f incoming/build/bootloader/bootloader.bin "$CHANNEL/p4/" 2>/dev/null || true
           cp -f incoming/build/partition_table/partition-table.bin "$CHANNEL/p4/" 2>/dev/null || true
           cp -f incoming/build/ota_data_initial.bin   "$CHANNEL/p4/" 2>/dev/null || true
-          cp -f incoming/build/tbd-sd-card.zip        "$CHANNEL/p4/" 2>/dev/null || true
-          cp -f incoming/build/tbd-sd-card-hash.txt   "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/dada-tbd-sd.zip        "$CHANNEL/p4/" 2>/dev/null || true
+          cp -f incoming/build/dada-tbd-sd-hash.txt   "$CHANNEL/p4/" 2>/dev/null || true
 
           # Unified image (versioned name from build)
           find incoming/ -name '*-unified.bin' -exec cp -f {} "$CHANNEL/p4/" \; 2>/dev/null || true
 
+          # tusb_msc.bin — seed from stable if not already present in this channel
+          if [ ! -f "$CHANNEL/p4/tusb_msc.bin" ] && [ -f "stable/p4/tusb_msc.bin" ]; then
+            cp -f "stable/p4/tusb_msc.bin" "$CHANNEL/p4/tusb_msc.bin"
+          fi
+
           # Create versioned pico copy (source file stays for future releases)
           mkdir -p "$CHANNEL/pico"
           PICO_NAME="dada-tbd-16-${TAG}-pico.uf2"
-          if [ -f "$CHANNEL/pico/ctag-tbd-pico.uf2" ]; then
-            cp -f "$CHANNEL/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
-          elif [ -f "stable/pico/ctag-tbd-pico.uf2" ]; then
+          if [ -f "$CHANNEL/pico/dada-tbd-pico.uf2" ]; then
+            cp -f "$CHANNEL/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
+          elif [ -f "stable/pico/dada-tbd-pico.uf2" ]; then
             # New channel — seed from stable pico firmware
-            cp -f "stable/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/ctag-tbd-pico.uf2"
-            cp -f "stable/pico/ctag-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
+            cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/dada-tbd-pico.uf2"
+            cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
           fi
 
           # Write channel manifest
@@ -75,12 +80,12 @@ jobs:
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "files": {
               "unified": "$CHANNEL/p4/$UNIFIED_NAME",
-              "p4": "$CHANNEL/p4/ctag-tbd.bin",
+              "p4": "$CHANNEL/p4/dada-tbd.bin",
               "bootloader": "$CHANNEL/p4/bootloader.bin",
               "partition_table": "$CHANNEL/p4/partition-table.bin",
               "ota_data": "$CHANNEL/p4/ota_data_initial.bin",
-              "sdcard": "$CHANNEL/p4/tbd-sd-card.zip",
-              "hash": "$CHANNEL/p4/tbd-sd-card-hash.txt",
+              "sdcard": "$CHANNEL/p4/dada-tbd-sd.zip",
+              "hash": "$CHANNEL/p4/dada-tbd-sd-hash.txt",
               "tusb_msc": "$CHANNEL/p4/tusb_msc.bin",
               "pico": "$CHANNEL/pico/$PICO_NAME"
             }

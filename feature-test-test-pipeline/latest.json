@@ -5,12 +5,12 @@
   "timestamp": "2026-03-22T10:02:52Z",
   "files": {
     "unified": "feature-test-test-pipeline/p4/dada-tbd-16-feature-test-test-pipeline-b4feb698-unified.bin",
-    "p4": "feature-test-test-pipeline/p4/ctag-tbd.bin",
+    "p4": "feature-test-test-pipeline/p4/dada-tbd.bin",
     "bootloader": "feature-test-test-pipeline/p4/bootloader.bin",
     "partition_table": "feature-test-test-pipeline/p4/partition-table.bin",
     "ota_data": "feature-test-test-pipeline/p4/ota_data_initial.bin",
-    "sdcard": "feature-test-test-pipeline/p4/tbd-sd-card.zip",
-    "hash": "feature-test-test-pipeline/p4/tbd-sd-card-hash.txt",
+    "sdcard": "feature-test-test-pipeline/p4/dada-tbd-sd.zip",
+    "hash": "feature-test-test-pipeline/p4/dada-tbd-sd-hash.txt",
     "tusb_msc": "feature-test-test-pipeline/p4/tusb_msc.bin",
     "pico": "feature-test-test-pipeline/pico/dada-tbd-16-feature-test-test-pipeline-b4feb698-pico.uf2"
   }
