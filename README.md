@@ -1,35 +1,75 @@
 # dada-tbd-firmware
 
-Firmware CDN for TBD-16 — served via GitHub Pages.
+Firmware CDN and App Catalog for [dadamachines TBD-16](https://dadamachines.com) — served via GitHub Pages.
 
 **URL:** `https://dadamachines.github.io/dada-tbd-firmware/`
 
 ## Structure
 
 ```
-stable/               ← latest stable release
-  latest.json         ← channel manifest (tag, timestamp, file paths)
-  p4/
-    ctag-tbd.bin      ← main P4 firmware (from CI)
-    tbd-sd-card.zip   ← SD card image (from CI)
-    tbd-sd-card-hash.txt
-    tusb_msc.bin      ← USB Mass Storage firmware (manual)
-  pico/
-    ctag-tbd-pico.uf2 ← RP2350 firmware (manual)
-staging/              ← staging pre-releases (same layout)
-feature/<name>/       ← feature-test builds (same layout)
+stable/                    ← latest stable release (dispatch-only)
+  latest.json              ← channel manifest (tag, timestamp, file paths)
+  p4/                      ← ESP32-P4 firmware binaries
+    dada-tbd.bin
+    bootloader.bin
+    partition-table.bin
+    ota_data_initial.bin
+    dada-tbd-sd.zip
+    tusb_msc.bin
+  pico/                    ← RP2350 firmware
+    dada-tbd-pico.uf2
+staging/                   ← staging pre-releases (same layout)
+feature-test-*/            ← ephemeral feature channels
+apps/                      ← app registry (PR-reviewed)
+  groovebox/
+    manifest.json          ← app metadata, release info, SHA-256
+    README.md
+    groovebox-0.4.0.uf2    ← binary (committed by CI)
+  mcl/
+    manifest.json
+    ...
+schema/                    ← JSON schemas
+  manifest.schema.json
+app-catalog.json           ← auto-generated from apps/*/manifest.json
 ```
 
-## How it works
+## How It Works
 
-1. The `ctag-tbd` repo CI builds firmware and triggers `repository_dispatch`
-2. `receive-firmware.yml` downloads the artifact and places files in the channel directory
-3. `deploy-pages.yml` publishes the repo to GitHub Pages
-4. Flash pages on `dadamachines.github.io/ctag-tbd/` fetch firmware from
-   `dadamachines.github.io/dada-tbd-firmware/` — **same origin, no CORS issues**
+### P4 Firmware (dispatch)
+1. `dadamachines/ctag-tbd` CI builds firmware → triggers `repository_dispatch`
+2. `receive-firmware.yml` downloads artifact → places in channel directory → deploys Pages
 
-## Static firmware
+### Pico Apps — Profile A (dispatch)
+1. Trusted contributor tags release → CI dispatches to this repo
+2. `receive-pico-app.yml` downloads `.uf2` → verifies SHA-256 → commits → deploys Pages
 
-`tusb_msc.bin` and `ctag-tbd-pico.uf2` are built separately and committed directly.
-They change rarely and are not part of the ESP-IDF CI pipeline.
-A place for binaries
+### Pico Apps — Profile B (manifest PR)
+1. External contributor creates GitHub Release with `.uf2` attached
+2. Opens PR to add/update `apps/{app-id}/manifest.json` with `sourceUrl` + `sha256`
+3. `validate-pr.yml` checks schema, downloads binary server-side, verifies SHA-256
+4. Maintainer reviews and merges
+5. `build-catalog.yml` downloads binary → commits to `apps/{id}/` → regenerates `app-catalog.json` → deploys Pages
+
+### Why Binaries Live Here (CORS)
+
+GitHub Release download URLs (`github.com/.../releases/download/...`) do **not**
+set `Access-Control-Allow-Origin` headers. The browser-based flash page and App
+Manager on `dadamachines.github.io` can only `fetch()` from the same origin.
+
+All binaries are served from `dadamachines.github.io/dada-tbd-firmware/` — same
+origin, no CORS issues. CI workflows download from external sources server-side
+(GitHub Actions runner) and commit the binaries here.
+
+## Workflows
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `receive-firmware.yml` | `repository_dispatch: firmware-update` | P4 firmware from main repo CI |
+| `receive-pico-app.yml` | `repository_dispatch: pico-app-update` | Pico `.uf2` from trusted contributors |
+| `validate-pr.yml` | PR touching `apps/` or `system-tools/` | Validate manifest PRs |
+| `build-catalog.yml` | Push to `main` touching `apps/` | Download binaries + regenerate catalog |
+| `deploy-pages.yml` | Push to `main` | Deploy everything to GitHub Pages |
+
+## Publishing an App
+
+See [CONTRIBUTING.md](https://github.com/dadamachines/ctag-tbd/blob/dada-tbd-master/CONTRIBUTING.md#building-rp2350-apps-pico-side) in the main repo for the full guide.

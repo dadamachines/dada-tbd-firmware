@@ -1,0 +1,153 @@
+# Build the app catalog from all apps/*/manifest.json files.
+# Downloads any binaries that don't yet exist locally (from sourceUrl),
+# verifies SHA-256, commits binaries + catalog, and deploys to Pages.
+#
+# Runs on push to main when apps/ or system-tools/ are modified.
+name: Build App Catalog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/**'
+      - 'system-tools/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download missing binaries and build catalog
+        run: |
+          ERRORS=0
+          CATALOG='{"generated":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","apps":[]}'
+
+          # Process each app manifest
+          for manifest in apps/*/manifest.json; do
+            [ -f "$manifest" ] || continue
+            APP_DIR=$(dirname "$manifest")
+            APP_ID=$(jq -r '.id' "$manifest")
+            echo "━━━ Processing: $APP_ID ━━━"
+
+            # For each release, ensure binary exists locally
+            RELEASE_COUNT=$(jq '.releases | length' "$manifest")
+            UPDATED=false
+
+            for i in $(seq 0 $((RELEASE_COUNT - 1))); do
+              VERSION=$(jq -r ".releases[$i].version" "$manifest")
+              SOURCE_URL=$(jq -r ".releases[$i].sourceUrl // empty" "$manifest")
+              SHA256=$(jq -r ".releases[$i].sha256 // empty" "$manifest")
+              CDN_PATH=$(jq -r ".releases[$i].cdnPath // empty" "$manifest")
+
+              # Determine expected local path
+              BINARY_NAME="${APP_ID}-${VERSION}.uf2"
+              LOCAL_PATH="$APP_DIR/$BINARY_NAME"
+              EXPECTED_CDN="apps/$APP_ID/$BINARY_NAME"
+
+              # If binary already exists locally, verify and skip download
+              if [ -f "$LOCAL_PATH" ]; then
+                ACTUAL_SHA=$(sha256sum "$LOCAL_PATH" | cut -d' ' -f1)
+                if [ "$ACTUAL_SHA" = "$SHA256" ]; then
+                  echo "  $VERSION: binary exists, SHA-256 verified ✓"
+                else
+                  echo "::error::$APP_ID $VERSION: local binary SHA-256 mismatch (expected $SHA256, got $ACTUAL_SHA)"
+                  ERRORS=$((ERRORS + 1))
+                fi
+              elif [ -n "$SOURCE_URL" ]; then
+                # Download from sourceUrl
+                echo "  $VERSION: downloading from $SOURCE_URL"
+                HTTP_CODE=$(curl -sSL -w '%{http_code}' -o "$LOCAL_PATH" "$SOURCE_URL" || echo "000")
+                if [ "$HTTP_CODE" != "200" ]; then
+                  echo "::error::$APP_ID $VERSION: download failed (HTTP $HTTP_CODE)"
+                  rm -f "$LOCAL_PATH"
+                  ERRORS=$((ERRORS + 1))
+                  continue
+                fi
+
+                # Verify SHA-256
+                ACTUAL_SHA=$(sha256sum "$LOCAL_PATH" | cut -d' ' -f1)
+                if [ "$ACTUAL_SHA" != "$SHA256" ]; then
+                  echo "::error::$APP_ID $VERSION: SHA-256 mismatch (expected $SHA256, got $ACTUAL_SHA)"
+                  rm -f "$LOCAL_PATH"
+                  ERRORS=$((ERRORS + 1))
+                  continue
+                fi
+                echo "  $VERSION: downloaded and verified ✓"
+              else
+                echo "::warning::$APP_ID $VERSION: no sourceUrl and no local binary"
+              fi
+
+              # Update cdnPath in manifest if needed
+              if [ "$CDN_PATH" != "$EXPECTED_CDN" ] && [ -f "$LOCAL_PATH" ]; then
+                TMP=$(mktemp)
+                jq --arg idx "$i" --arg cdn "$EXPECTED_CDN" \
+                   '.releases[($idx | tonumber)].cdnPath = $cdn' \
+                   "$manifest" > "$TMP" && mv "$TMP" "$manifest"
+                UPDATED=true
+              fi
+            done
+
+            if [ "$UPDATED" = true ]; then
+              echo "  Updated cdnPath fields in manifest"
+            fi
+
+            # Add app to catalog (full manifest content)
+            CATALOG=$(echo "$CATALOG" | jq --slurpfile app "$manifest" '.apps += $app')
+
+          done
+
+          # Process system-tools the same way
+          for manifest in system-tools/*/manifest.json; do
+            [ -f "$manifest" ] || continue
+            CATALOG=$(echo "$CATALOG" | jq --slurpfile tool "$manifest" \
+              '.systemTools = (.systemTools // []) + $tool')
+          done
+
+          # Write catalog
+          echo "$CATALOG" | jq '.' > app-catalog.json
+          echo ""
+          echo "━━━ Catalog written: app-catalog.json ━━━"
+          jq '.apps | length' app-catalog.json | xargs -I{} echo "  Apps: {}"
+          jq '.systemTools // [] | length' app-catalog.json | xargs -I{} echo "  System tools: {}"
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo ""
+            echo "::error::Catalog build completed with $ERRORS error(s)"
+            exit 1
+          fi
+
+      - name: Commit catalog and binaries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "Update app catalog — $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy-pages:
+    needs: build-catalog
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

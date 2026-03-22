@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TBD App Manifest",
+  "description": "Manifest schema for RP2350 apps in the dadamachines TBD-16 app catalog",
+  "type": "object",
+  "required": ["id", "name", "description", "author", "releases"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Machine-readable slug, must match the directory name under apps/"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name"
+    },
+    "description": {
+      "type": "string",
+      "description": "One-line description of what the app does"
+    },
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "github": { "type": "string" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "repo": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the app's source repository"
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier"
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["official", "partner", "community", "system"],
+      "description": "App trust tier"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["instrument", "effect", "sequencer", "utility", "system"],
+      "description": "App category for catalog grouping"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Searchable tags"
+    },
+    "sdFilename": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-]+\\.uf2$",
+      "description": "Filename on the Pico SD card under /tbd-apps/"
+    },
+    "alwaysInstalled": {
+      "type": "boolean",
+      "description": "If true, this app cannot be removed (utilities only)"
+    },
+    "releases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["version", "firmwareCompat", "sha256"],
+        "properties": {
+          "version": {
+            "type": "string",
+            "description": "Semver version string (without v prefix)"
+          },
+          "firmwareCompat": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+$",
+            "description": "MAJOR.MINOR firmware compatibility range"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Release date (YYYY-MM-DD)"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL where the .uf2 was originally published (for audit/provenance)"
+          },
+          "cdnPath": {
+            "type": "string",
+            "description": "Local CDN path (set by CI, not by contributor)"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$",
+            "description": "SHA-256 hash of the .uf2 binary"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "File size in bytes"
+          },
+          "changelog": {
+            "type": "string",
+            "description": "What changed in this release"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,164 @@
+# Validate app manifest PRs — runs on pull requests that touch apps/ or system-tools/.
+# Downloads the .uf2 from the sourceUrl (server-side, no CORS issue),
+# verifies SHA-256, validates manifest schema, and checks scope.
+name: Validate App PR
+
+on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - 'system-tools/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check PR scope
+        run: |
+          # Ensure the PR only touches allowed directories
+          CHANGED=$(gh pr diff ${{ github.event.pull_request.number }} --name-only)
+          echo "Changed files:"
+          echo "$CHANGED"
+
+          FORBIDDEN=$(echo "$CHANGED" | grep -vE '^(apps/|system-tools/|\.gitignore$)' || true)
+          if [ -n "$FORBIDDEN" ]; then
+            echo "::error::PR touches files outside apps/ and system-tools/:"
+            echo "$FORBIDDEN"
+            echo ""
+            echo "App PRs must only modify files under apps/ or system-tools/."
+            echo "Firmware channels (stable/, staging/, etc.) are managed by CI only."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find changed manifests
+        id: manifests
+        run: |
+          MANIFESTS=$(git diff --name-only origin/main...HEAD -- 'apps/*/manifest.json' 'system-tools/*/manifest.json')
+          echo "manifests<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$MANIFESTS" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          if [ -z "$MANIFESTS" ]; then
+            echo "::notice::No manifest.json files changed — skipping validation"
+          fi
+
+      - name: Validate each manifest
+        if: steps.manifests.outputs.manifests != ''
+        run: |
+          ERRORS=0
+          while IFS= read -r manifest; do
+            [ -z "$manifest" ] && continue
+            echo "━━━ Validating: $manifest ━━━"
+
+            # Check it's valid JSON
+            if ! jq empty "$manifest" 2>/dev/null; then
+              echo "::error file=$manifest::Invalid JSON"
+              ERRORS=$((ERRORS + 1))
+              continue
+            fi
+
+            # Required fields
+            for field in id name description author releases; do
+              if [ "$(jq -r ".$field // empty" "$manifest")" = "" ]; then
+                echo "::error file=$manifest::Missing required field: $field"
+                ERRORS=$((ERRORS + 1))
+              fi
+            done
+
+            # Validate id matches directory name
+            APP_ID=$(jq -r '.id' "$manifest")
+            DIR_NAME=$(basename "$(dirname "$manifest")")
+            if [ "$APP_ID" != "$DIR_NAME" ]; then
+              echo "::error file=$manifest::id '$APP_ID' does not match directory name '$DIR_NAME'"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            # Validate id format
+            if ! echo "$APP_ID" | grep -qE '^[a-z0-9][a-z0-9-]*$'; then
+              echo "::error file=$manifest::Invalid id format: '$APP_ID' (must be lowercase alphanumeric + hyphens)"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            # Validate each release
+            RELEASE_COUNT=$(jq '.releases | length' "$manifest")
+            for i in $(seq 0 $((RELEASE_COUNT - 1))); do
+              VERSION=$(jq -r ".releases[$i].version" "$manifest")
+              SOURCE_URL=$(jq -r ".releases[$i].sourceUrl // empty" "$manifest")
+              SHA256=$(jq -r ".releases[$i].sha256 // empty" "$manifest")
+              COMPAT=$(jq -r ".releases[$i].firmwareCompat // empty" "$manifest")
+              SIZE=$(jq -r ".releases[$i].size // empty" "$manifest")
+
+              echo "  Release $VERSION:"
+
+              # Check required release fields
+              if [ -z "$SOURCE_URL" ]; then
+                echo "::error file=$manifest::Release $VERSION missing sourceUrl"
+                ERRORS=$((ERRORS + 1))
+                continue
+              fi
+              if [ -z "$SHA256" ]; then
+                echo "::error file=$manifest::Release $VERSION missing sha256"
+                ERRORS=$((ERRORS + 1))
+                continue
+              fi
+              if [ -z "$COMPAT" ]; then
+                echo "::error file=$manifest::Release $VERSION missing firmwareCompat"
+                ERRORS=$((ERRORS + 1))
+              fi
+
+              # Validate firmwareCompat format (MAJOR.MINOR)
+              if ! echo "$COMPAT" | grep -qE '^[0-9]+\.[0-9]+$'; then
+                echo "::error file=$manifest::Invalid firmwareCompat format: '$COMPAT' (expected MAJOR.MINOR)"
+                ERRORS=$((ERRORS + 1))
+              fi
+
+              # Download and verify binary
+              echo "  Downloading: $SOURCE_URL"
+              TMP_UF2=$(mktemp --suffix=.uf2)
+              HTTP_CODE=$(curl -sSL -w '%{http_code}' -o "$TMP_UF2" "$SOURCE_URL" || echo "000")
+              if [ "$HTTP_CODE" != "200" ]; then
+                echo "::error file=$manifest::Failed to download $SOURCE_URL (HTTP $HTTP_CODE)"
+                ERRORS=$((ERRORS + 1))
+                rm -f "$TMP_UF2"
+                continue
+              fi
+
+              # Check file size
+              ACTUAL_SIZE=$(stat -c%s "$TMP_UF2" 2>/dev/null || stat -f%z "$TMP_UF2")
+              echo "  Downloaded: $ACTUAL_SIZE bytes"
+
+              if [ "$ACTUAL_SIZE" -gt 2097152 ]; then
+                echo "::warning file=$manifest::Release $VERSION is large: $ACTUAL_SIZE bytes (> 2 MB)"
+              fi
+
+              if [ -n "$SIZE" ] && [ "$SIZE" != "null" ] && [ "$ACTUAL_SIZE" != "$SIZE" ]; then
+                echo "::error file=$manifest::Size mismatch for $VERSION: expected $SIZE, got $ACTUAL_SIZE"
+                ERRORS=$((ERRORS + 1))
+              fi
+
+              # Verify SHA-256
+              ACTUAL_SHA=$(sha256sum "$TMP_UF2" | cut -d' ' -f1)
+              echo "  Expected SHA-256: $SHA256"
+              echo "  Actual SHA-256:   $ACTUAL_SHA"
+              if [ "$ACTUAL_SHA" != "$SHA256" ]; then
+                echo "::error file=$manifest::SHA-256 mismatch for $VERSION"
+                ERRORS=$((ERRORS + 1))
+              else
+                echo "  ✓ SHA-256 verified"
+              fi
+
+              rm -f "$TMP_UF2"
+            done
+
+            echo ""
+          done <<< "${{ steps.manifests.outputs.manifests }}"
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::Validation failed with $ERRORS error(s)"
+            exit 1
+          fi
+          echo "✓ All manifests validated successfully"

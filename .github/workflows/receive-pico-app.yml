@@ -1,0 +1,155 @@
+# Receive a Pico app .uf2 from a trusted contributor's CI via repository_dispatch.
+# Downloads the artifact, verifies SHA-256, commits the binary to the
+# appropriate channel, and deploys to GitHub Pages.
+#
+# Trigger: repository_dispatch with event-type "pico-app-update"
+# Required payload fields:
+#   channel    - CDN channel (stable, staging, feature-test-*)
+#   app_id     - app slug (e.g. "groovebox")
+#   version    - semver tag (e.g. "v1.0.0")
+#   run_id     - GitHub Actions run ID that produced the artifact
+#   sha256     - expected SHA-256 of the .uf2 file
+#   repository - source repo (e.g. "possan/tbd-pico-seq3")
+#   artifact_name - name of the uploaded artifact (default: "tbd_frontend")
+
+name: Receive Pico App
+
+on:
+  repository_dispatch:
+    types: [pico-app-update]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  receive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate payload
+        run: |
+          for field in channel app_id version run_id sha256 repository; do
+            val=$(echo '${{ toJSON(github.event.client_payload) }}' | jq -r ".$field // empty")
+            if [ -z "$val" ]; then
+              echo "::error::Missing required field: $field"
+              exit 1
+            fi
+          done
+
+          CHANNEL="${{ github.event.client_payload.channel }}"
+          # Validate channel name: only alphanumeric, hyphens, dots
+          if ! echo "$CHANNEL" | grep -qE '^[a-zA-Z0-9][a-zA-Z0-9._-]*$'; then
+            echo "::error::Invalid channel name: $CHANNEL"
+            exit 1
+          fi
+
+          APP_ID="${{ github.event.client_payload.app_id }}"
+          if ! echo "$APP_ID" | grep -qE '^[a-z0-9][a-z0-9-]*$'; then
+            echo "::error::Invalid app_id: $APP_ID (must be lowercase alphanumeric + hyphens)"
+            exit 1
+          fi
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.event.client_payload.artifact_name || 'tbd_frontend' }}
+          path: incoming/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.client_payload.repository }}
+          run-id: ${{ github.event.client_payload.run_id }}
+
+      - name: Verify SHA-256 and place binary
+        run: |
+          CHANNEL="${{ github.event.client_payload.channel }}"
+          APP_ID="${{ github.event.client_payload.app_id }}"
+          VERSION="${{ github.event.client_payload.version }}"
+          EXPECTED_SHA="${{ github.event.client_payload.sha256 }}"
+
+          # Find the .uf2 file
+          UF2=$(find incoming/ -name '*.uf2' -type f | head -1)
+          if [ -z "$UF2" ]; then
+            echo "::error::No .uf2 file found in artifact"
+            exit 1
+          fi
+
+          # Verify SHA-256
+          ACTUAL_SHA=$(sha256sum "$UF2" | cut -d' ' -f1)
+          echo "Expected SHA-256: $EXPECTED_SHA"
+          echo "Actual SHA-256:   $ACTUAL_SHA"
+          if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
+            echo "::error::SHA-256 mismatch!"
+            exit 1
+          fi
+
+          # Check file size (< 16 MB sanity check)
+          SIZE=$(stat -c%s "$UF2" 2>/dev/null || stat -f%z "$UF2")
+          if [ "$SIZE" -gt 16777216 ]; then
+            echo "::error::File too large: $SIZE bytes (max 16 MB)"
+            exit 1
+          fi
+
+          # Place in channel pico directory
+          mkdir -p "$CHANNEL/pico"
+          DEST_NAME="dada-tbd-pico.uf2"
+          VERSIONED_NAME="dada-tbd-16-${VERSION}-pico.uf2"
+          cp -f "$UF2" "$CHANNEL/pico/$DEST_NAME"
+          cp -f "$UF2" "$CHANNEL/pico/$VERSIONED_NAME"
+
+          # Also commit to apps/ directory for catalog serving
+          mkdir -p "apps/$APP_ID"
+          APP_BINARY="${APP_ID}-${VERSION#v}.uf2"
+          cp -f "$UF2" "apps/$APP_ID/$APP_BINARY"
+
+          echo "Placed: $CHANNEL/pico/$DEST_NAME"
+          echo "Placed: $CHANNEL/pico/$VERSIONED_NAME"
+          echo "Placed: apps/$APP_ID/$APP_BINARY"
+
+          # Update channel latest.json pico fields
+          if [ -f "$CHANNEL/latest.json" ]; then
+            # Update pico field in existing manifest
+            TMP=$(mktemp)
+            jq --arg pico "$CHANNEL/pico/$VERSIONED_NAME" \
+               --arg ver "$VERSION" \
+               '.files.pico = $pico | .picoVersion = $ver' \
+               "$CHANNEL/latest.json" > "$TMP" && mv "$TMP" "$CHANNEL/latest.json"
+          fi
+
+          # Write pico version file
+          echo "$VERSION" > "$CHANNEL/pico/pico-version.txt"
+
+          rm -rf incoming/
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          CHANNEL="${{ github.event.client_payload.channel }}"
+          APP_ID="${{ github.event.client_payload.app_id }}"
+          VERSION="${{ github.event.client_payload.version }}"
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Pico app: $APP_ID $VERSION → $CHANNEL channel"
+          git push
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy-pages:
+    needs: receive
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
