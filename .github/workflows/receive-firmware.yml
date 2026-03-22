@@ -56,41 +56,48 @@ jobs:
             cp -f "stable/p4/tusb_msc.bin" "$CHANNEL/p4/tusb_msc.bin"
           fi
 
-          # Create versioned pico copy (source file stays for future releases)
-          mkdir -p "$CHANNEL/pico"
-          PICO_NAME="dada-tbd-16-${TAG}-pico.uf2"
-          if [ -f "$CHANNEL/pico/dada-tbd-pico.uf2" ]; then
-            cp -f "$CHANNEL/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
-          elif [ -f "stable/pico/dada-tbd-pico.uf2" ]; then
-            # New channel — seed from stable pico firmware
-            cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/dada-tbd-pico.uf2"
-            cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
-          fi
-
-          # Write channel manifest
+          # Write channel manifest (P4 + SD only — Pico fields are patched
+          # in separately by the Pico app's publish-cdn job)
           UNIFIED_NAME=$(find incoming/ -name '*-unified.bin' -printf '%f' 2>/dev/null || basename $(find incoming/ -name '*-unified.bin') 2>/dev/null || echo '')
           # Extract MAJOR.MINOR from tag for compatibility range
           # v0.4.1 → 0.4, staging-abc123 → staging, feature-test-foo-abc123 → feature-test-foo
           COMPAT_RANGE=$(echo "$TAG" | sed -E 's/^v?([0-9]+\.[0-9]+)\..*/\1/' )
-          cat > "$CHANNEL/latest.json" << EOF
-          {
-            "tag": "$TAG",
-            "channel": "$CHANNEL",
-            "compatRange": "$COMPAT_RANGE",
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "files": {
-              "unified": "$CHANNEL/p4/$UNIFIED_NAME",
-              "p4": "$CHANNEL/p4/dada-tbd.bin",
-              "bootloader": "$CHANNEL/p4/bootloader.bin",
-              "partition_table": "$CHANNEL/p4/partition-table.bin",
-              "ota_data": "$CHANNEL/p4/ota_data_initial.bin",
-              "sdcard": "$CHANNEL/p4/dada-tbd-sd.zip",
-              "hash": "$CHANNEL/p4/dada-tbd-sd-hash.txt",
-              "tusb_msc": "$CHANNEL/p4/tusb_msc.bin",
-              "pico": "$CHANNEL/pico/$PICO_NAME"
+
+          # Preserve existing pico fields if they were set by the Pico CI
+          PICO_FILE=""
+          PICO_VER=""
+          if [ -f "$CHANNEL/latest.json" ]; then
+            PICO_FILE=$(jq -r '.files.pico // empty' "$CHANNEL/latest.json" 2>/dev/null || true)
+            PICO_VER=$(jq -r '.picoVersion // empty' "$CHANNEL/latest.json" 2>/dev/null || true)
+          fi
+
+          # Build manifest — include pico fields only if they already exist
+          jq -n \
+            --arg tag "$TAG" \
+            --arg channel "$CHANNEL" \
+            --arg compat "$COMPAT_RANGE" \
+            --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg unified "$CHANNEL/p4/$UNIFIED_NAME" \
+            --arg p4 "$CHANNEL/p4/dada-tbd.bin" \
+            --arg boot "$CHANNEL/p4/bootloader.bin" \
+            --arg pt "$CHANNEL/p4/partition-table.bin" \
+            --arg ota "$CHANNEL/p4/ota_data_initial.bin" \
+            --arg sd "$CHANNEL/p4/dada-tbd-sd.zip" \
+            --arg hash "$CHANNEL/p4/dada-tbd-sd-hash.txt" \
+            --arg tusb "$CHANNEL/p4/tusb_msc.bin" \
+            --arg pico "$PICO_FILE" \
+            --arg picoVer "$PICO_VER" \
+            '{
+              tag: $tag, channel: $channel, compatRange: $compat,
+              timestamp: $ts,
+              files: {
+                unified: $unified, p4: $p4, bootloader: $boot,
+                partition_table: $pt, ota_data: $ota, sdcard: $sd,
+                hash: $hash, tusb_msc: $tusb
+              }
             }
-          }
-          EOF
+            | if $pico != "" then .files.pico = $pico | .picoVersion = $picoVer else . end' \
+            > "$CHANNEL/latest.json"
 
           rm -rf incoming/
 
