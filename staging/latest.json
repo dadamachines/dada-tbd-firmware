@@ -1,9 +1,10 @@
 {
-  "tag": "staging-490ce5f2713ccd7dcd02bfc6861c8324cc9bd9bb",
+  "tag": "staging-5d40edf29e63f61f361991482dddc117e6d64cee",
   "channel": "staging",
-  "timestamp": "2026-03-21T22:48:50Z",
+  "compatRange": "staging-5d40edf29e63f61f361991482dddc117e6d64cee",
+  "timestamp": "2026-03-22T11:02:18Z",
   "files": {
-    "unified": "staging/p4/dada-tbd-16-staging-490ce5f2713ccd7dcd02bfc6861c8324cc9bd9bb-unified.bin",
+    "unified": "staging/p4/dada-tbd-16-staging-5d40edf29e63f61f361991482dddc117e6d64cee-unified.bin",
     "p4": "staging/p4/dada-tbd.bin",
     "bootloader": "staging/p4/bootloader.bin",
     "partition_table": "staging/p4/partition-table.bin",
@@ -11,6 +12,6 @@
     "sdcard": "staging/p4/dada-tbd-sd.zip",
     "hash": "staging/p4/dada-tbd-sd-hash.txt",
     "tusb_msc": "staging/p4/tusb_msc.bin",
-    "pico": "staging/pico/dada-tbd-16-staging-490ce5f2713ccd7dcd02bfc6861c8324cc9bd9bb-pico.uf2"
+    "pico": "staging/pico/dada-tbd-16-staging-5d40edf29e63f61f361991482dddc117e6d64cee-pico.uf2"
   }
 }
