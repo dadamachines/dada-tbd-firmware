@@ -1,0 +1,27 @@
+{
+  "generated": "2026-03-22T14:06:48Z",
+  "apps": [
+    {
+      "id": "groovebox",
+      "name": "Groovebox",
+      "description": "16-track drum machine and sequencer with Ableton Link support",
+      "author": {
+        "name": "Per-Olov Jernberg",
+        "github": "possan",
+        "url": "https://possan.codes/"
+      },
+      "repo": "https://github.com/possan/tbd-pico-seq3",
+      "license": "MIT",
+      "tier": "official",
+      "category": "instrument",
+      "tags": [
+        "sequencer",
+        "drums",
+        "midi",
+        "link"
+      ],
+      "sdFilename": "groovebox.uf2",
+      "releases": []
+    }
+  ]
+}
