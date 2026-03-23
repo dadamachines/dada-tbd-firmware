@@ -97,9 +97,7 @@ jobs:
 
           # Place in channel pico directory
           mkdir -p "$CHANNEL/pico"
-          DEST_NAME="dada-tbd-pico.uf2"
           VERSIONED_NAME="dada-tbd-16-${VERSION}-pico.uf2"
-          cp -f "$UF2" "$CHANNEL/pico/$DEST_NAME"
           cp -f "$UF2" "$CHANNEL/pico/$VERSIONED_NAME"
 
           # Also commit to apps/ directory for catalog serving
@@ -107,11 +105,10 @@ jobs:
           APP_BINARY="${APP_ID}-${VERSION#v}.uf2"
           cp -f "$UF2" "apps/$APP_ID/$APP_BINARY"
 
-          echo "Placed: $CHANNEL/pico/$DEST_NAME"
           echo "Placed: $CHANNEL/pico/$VERSIONED_NAME"
           echo "Placed: apps/$APP_ID/$APP_BINARY"
 
-          # Update channel releases.json — patch pico fields on latest version
+          # Update channel releases.json — set picoVersion and patch pico path on latest entry
           if [ -f "$CHANNEL/releases.json" ]; then
             TMP=$(mktemp)
             jq --arg pico "$CHANNEL/pico/$VERSIONED_NAME" \
@@ -120,8 +117,9 @@ jobs:
                "$CHANNEL/releases.json" > "$TMP" && mv "$TMP" "$CHANNEL/releases.json"
           fi
 
-          # Write pico version file
-          echo "$VERSION" > "$CHANNEL/pico/pico-version.txt"
+          # Clean up legacy unversioned files
+          rm -f "$CHANNEL/pico/dada-tbd-pico.uf2"
+          rm -f "$CHANNEL/pico/pico-version.txt"
 
           rm -rf incoming/
 

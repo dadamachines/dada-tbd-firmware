@@ -1,0 +1,27 @@
+{
+  "channel": "stable",
+  "latest": "v0.4.2",
+  "picoVersion": "v0.4.1",
+  "versions": [
+    {
+      "tag": "v0.4.2",
+      "timestamp": "2026-03-23T09:55:26Z",
+      "files": {
+        "unified": "stable/p4/dada-tbd-16-v0.4.2-unified.bin",
+        "sdcard": "stable/p4/dada-tbd-16-v0.4.2-sd.zip",
+        "hash": "stable/p4/dada-tbd-16-v0.4.2-sd-hash.txt",
+        "pico": "stable/pico/dada-tbd-16-v0.4.1-pico.uf2"
+      }
+    },
+    {
+      "tag": "v0.4.1",
+      "timestamp": "2026-03-21T20:23:18Z",
+      "files": {
+        "unified": "stable/p4/dada-tbd-16-v0.4.1-unified.bin",
+        "sdcard": "stable/p4/dada-tbd-16-v0.4.1-sd.zip",
+        "hash": "stable/p4/dada-tbd-16-v0.4.1-sd-hash.txt",
+        "pico": "stable/pico/dada-tbd-16-v0.4.1-pico.uf2"
+      }
+    }
+  ]
+}

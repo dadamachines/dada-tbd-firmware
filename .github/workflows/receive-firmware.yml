@@ -39,7 +39,7 @@ jobs:
           echo "Channel: $CHANNEL  Tag: $TAG"
 
           P4="$CHANNEL/p4"
-          mkdir -p "$P4" "$CHANNEL/pico"
+          mkdir -p "$P4"
 
           # ── Device prefix: all CDN binaries self-identify as TBD-16 ──
           DEV="dada-tbd-16"
@@ -68,57 +68,58 @@ jobs:
             done
           fi
 
-          # ── Pico firmware ──
-          PICO_NAME="${DEV}-${TAG}-pico.uf2"
-          if [ -f "$CHANNEL/pico/dada-tbd-pico.uf2" ]; then
-            cp -f "$CHANNEL/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
-          elif [ -f "stable/pico/dada-tbd-pico.uf2" ]; then
-            cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/dada-tbd-pico.uf2"
-            cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
+          # ── Pico firmware: seed new channels from stable's latest pico ──
+          if [ "$CHANNEL" != "stable" ] && [ ! -d "$CHANNEL/pico" ]; then
+            # Find the latest versioned pico from stable
+            LATEST_PICO=$(ls -1 stable/pico/${DEV}-*-pico.uf2 2>/dev/null | sort -V | tail -1)
+            if [ -n "$LATEST_PICO" ]; then
+              mkdir -p "$CHANNEL/pico"
+              PICO_NAME="${DEV}-${TAG}-pico.uf2"
+              cp -f "$LATEST_PICO" "$CHANNEL/pico/$PICO_NAME"
+            fi
           fi
 
           # ── Build releases.json ──
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           MANIFEST="$CHANNEL/releases.json"
 
-          NEW_ENTRY=$(cat <<ENTRY
-          {
-            "tag": "$TAG",
-            "timestamp": "$TIMESTAMP",
-            "files": {
-              "unified": "$P4/$UNIFIED_NAME",
-              "sdcard": "$P4/${DEV}-${TAG}-sd.zip",
-              "hash": "$P4/${DEV}-${TAG}-sd-hash.txt",
-              "pico": "$CHANNEL/pico/$PICO_NAME"
-            }
-          }
-          ENTRY
-          )
+          # Find the pico file for this tag (if it exists)
+          PICO_PATH=""
+          PICO_FILE=$(ls -1 "$CHANNEL/pico/${DEV}-${TAG}-pico.uf2" 2>/dev/null | head -1)
+          if [ -n "$PICO_FILE" ]; then
+            PICO_PATH="$PICO_FILE"
+          fi
+
+          NEW_ENTRY=$(jq -n \
+            --arg tag "$TAG" \
+            --arg ts "$TIMESTAMP" \
+            --arg unified "$P4/$UNIFIED_NAME" \
+            --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
+            --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
+            --arg pico "$PICO_PATH" \
+            '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico}}')
 
           if [ -f "$MANIFEST" ]; then
             TMP=$(mktemp)
-            echo "$NEW_ENTRY" | jq --arg tag "$TAG" \
-              --slurpfile existing "$MANIFEST" \
-              '$existing[0] | .latest = $tag | .versions = ([input] + [.versions[] | select(.tag != $tag)])' \
-              - > "$TMP" && mv "$TMP" "$MANIFEST"
+            jq --arg tag "$TAG" --argjson entry "$NEW_ENTRY" \
+              '.latest = $tag | .versions = ([$entry] + [.versions[] | select(.tag != $tag)])' \
+              "$MANIFEST" > "$TMP" && mv "$TMP" "$MANIFEST"
           else
-            echo "$NEW_ENTRY" | jq --arg ch "$CHANNEL" --arg tag "$TAG" \
-              '{channel: $ch, latest: $tag, versions: [input]}' \
-              - > "$MANIFEST"
+            jq -n --arg ch "$CHANNEL" --arg tag "$TAG" --argjson entry "$NEW_ENTRY" \
+              '{channel: $ch, latest: $tag, versions: [$entry]}' > "$MANIFEST"
           fi
 
           # ── Clean up legacy files ──
           rm -f "$CHANNEL/latest.json"
           rm -f "$P4/dada-tbd.bin" "$P4/bootloader.bin" "$P4/partition-table.bin"
-          rm -f "$P4/ota_data_initial.bin"
-          rm -f "$P4/tusb_msc.bin"
+          rm -f "$P4/ota_data_initial.bin" "$P4/tusb_msc.bin"
           rm -f "$P4/${DEV}-app.bin" "$P4/${DEV}-bootloader.bin"
           rm -f "$P4/${DEV}-partitions.bin" "$P4/${DEV}-otadata.bin"
           rm -f "$P4/${DEV}-tusb-msc.bin"
           rm -f "$P4/${DEV}-sd.zip" "$P4/${DEV}-sd-hash.txt"
           rm -f "$P4/dada-tbd-sd.zip" "$P4/dada-tbd-sd-hash.txt"
-          # Remove old version subdirectories (version is now in filename)
-          find "$P4" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} + 2>/dev/null || true
+          rm -f "$CHANNEL/pico/dada-tbd-pico.uf2"
+          rm -f "$CHANNEL/pico/pico-version.txt"
 
           rm -rf incoming/
 
