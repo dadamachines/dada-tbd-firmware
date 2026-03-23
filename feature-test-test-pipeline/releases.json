@@ -10,7 +10,9 @@
         "sdcard": "feature-test-test-pipeline/p4/dada-tbd-16-feature-test-test-pipeline-sd.zip",
         "hash": "feature-test-test-pipeline/p4/dada-tbd-16-feature-test-test-pipeline-sd-hash.txt",
         "pico": "feature-test-test-pipeline/pico/dada-tbd-16-feature-test-test-pipeline-pico.uf2"
-      }
+      },
+      "webuiVersion": "0.4.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
     }
   ]
 }

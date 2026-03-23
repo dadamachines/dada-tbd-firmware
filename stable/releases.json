@@ -11,7 +11,9 @@
         "sdcard": "stable/p4/dada-tbd-16-v0.4.2-sd.zip",
         "hash": "stable/p4/dada-tbd-16-v0.4.2-sd-hash.txt",
         "pico": "stable/pico/dada-tbd-16-v0.4.1-pico.uf2"
-      }
+      },
+      "webuiVersion": "0.4.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
     },
     {
       "tag": "v0.4.1",
@@ -21,7 +23,9 @@
         "sdcard": "stable/p4/dada-tbd-16-v0.4.1-sd.zip",
         "hash": "stable/p4/dada-tbd-16-v0.4.1-sd-hash.txt",
         "pico": "stable/pico/dada-tbd-16-v0.4.1-pico.uf2"
-      }
+      },
+      "webuiVersion": "0.4.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
     }
   ]
 }
