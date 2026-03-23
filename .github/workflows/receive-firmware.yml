@@ -55,14 +55,14 @@ jobs:
           cp -f incoming/build/dada-tbd-sd.zip       "$P4/${DEV}-${TAG}-sd.zip"       2>/dev/null || true
           cp -f incoming/build/dada-tbd-sd-hash.txt  "$P4/${DEV}-${TAG}-sd-hash.txt"  2>/dev/null || true
 
-          # ── tusb_msc — shared utility app, lives in apps/tusb-msc/ ──
+          # ── tusb_msc — P4 MSC utility, lives in utilities/ (not a Pico app) ──
           # Only placed once; not duplicated per channel.
-          mkdir -p apps/tusb-msc
-          if [ ! -f "apps/tusb-msc/${DEV}-tusb-msc.bin" ]; then
+          mkdir -p "utilities/dada-tbd-16-tusb_msc-p4"
+          if [ ! -f "utilities/dada-tbd-16-tusb_msc-p4/${DEV}-tusb-msc.bin" ]; then
             # Migrate from old per-channel locations
             for SRC in "stable/p4/${DEV}-tusb-msc.bin" "stable/p4/tusb_msc.bin"; do
               if [ -f "$SRC" ]; then
-                cp -f "$SRC" "apps/tusb-msc/${DEV}-tusb-msc.bin"
+                cp -f "$SRC" "utilities/dada-tbd-16-tusb_msc-p4/${DEV}-tusb-msc.bin"
                 break
               fi
             done
