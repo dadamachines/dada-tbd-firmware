@@ -32,6 +32,11 @@ staging/                   ← staging pre-releases (same layout as stable/)
   pico/
     dada-tbd-16-staging-v0.4.2-3-pico.uf2
 feature-test-*/            ← ephemeral per-feature channels (same layout)
+webui-updates/             ← WebUI update packages (mirror of docs site)
+  latest.json              ← version manifest for on-device updater
+  webui-update-v0.3.5.zip
+  webui-update-v0.3.4.zip
+  ...
 schema/                    ← JSON schemas
   manifest.schema.json
 app-catalog.json           ← auto-generated from apps/*/manifest.json
