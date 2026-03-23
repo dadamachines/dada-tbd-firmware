@@ -13,27 +13,29 @@ apps/                      ← shared utility apps + app catalog
   groovebox/
     manifest.json          ← app metadata, release info, SHA-256
     README.md
-    groovebox-0.4.0.uf2    ← binary (committed by CI)
-  mcl/
-    manifest.json
-    ...
 stable/                    ← latest stable release (dispatch-only)
-  releases.json            ← channel catalog (versions array)
-  p4/                      ← ESP32-P4 firmware
-    dada-tbd-16-v0.5.0-unified.bin  ← unified flash image (versioned)
-    dada-tbd-16-v0.5.0-sd.zip       ← SD card image (versioned)
-    dada-tbd-16-v0.5.0-sd-hash.txt  ← SD card hash (versioned)
-    dada-tbd-16-v0.4.2-unified.bin  ← older releases accumulate
+  releases.json            ← channel manifest (versions array)
+  p4/                      ← ESP32-P4 firmware (versioned filenames accumulate)
+    dada-tbd-16-v0.4.2-unified.bin
     dada-tbd-16-v0.4.2-sd.zip
     dada-tbd-16-v0.4.2-sd-hash.txt
-  pico/                    ← RP2350 firmware
-    dada-tbd-pico.uf2               ← latest (source for versioned copies)
-    dada-tbd-16-v0.5.0-pico.uf2    ← versioned (accumulates)
-staging/                   ← staging pre-releases (same layout)
-feature-test-*/            ← ephemeral feature channels
+    dada-tbd-16-v0.4.1-unified.bin
+    dada-tbd-16-v0.4.1-sd.zip
+    dada-tbd-16-v0.4.1-sd-hash.txt
+  pico/                    ← RP2350 firmware (versioned only, no unversioned copies)
+    dada-tbd-16-v0.4.1-pico.uf2
+staging/                   ← staging pre-releases (same layout as stable/)
+  releases.json
+  p4/
+    dada-tbd-16-staging-v0.4.2-3-unified.bin
+    ...
+  pico/
+    dada-tbd-16-staging-v0.4.2-3-pico.uf2
+feature-test-*/            ← ephemeral per-feature channels (same layout)
 schema/                    ← JSON schemas
   manifest.schema.json
 app-catalog.json           ← auto-generated from apps/*/manifest.json
+index.html                 ← landing page with channel links
 ```
 
 ## How It Works
