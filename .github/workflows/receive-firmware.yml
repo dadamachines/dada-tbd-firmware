@@ -90,14 +90,69 @@ jobs:
             PICO_PATH="$PICO_FILE"
           fi
 
-          NEW_ENTRY=$(jq -n \
-            --arg tag "$TAG" \
-            --arg ts "$TIMESTAMP" \
-            --arg unified "$P4/$UNIFIED_NAME" \
-            --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
-            --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
-            --arg pico "$PICO_PATH" \
-            '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico}}')
+          # ── WebUI update package ──
+          WEBUI_VERSION="${{ github.event.client_payload.webui_version }}"
+          WEBUI_ZIP_SRC=$(find incoming/ -name 'webui-update-v*.zip' -print -quit)
+          WEBUI_UPDATE_PATH=""
+          if [ -n "$WEBUI_ZIP_SRC" ] && [ -n "$WEBUI_VERSION" ]; then
+            mkdir -p webui-updates
+            WEBUI_ZIP_NAME="webui-update-v${WEBUI_VERSION}.zip"
+            cp -f "$WEBUI_ZIP_SRC" "webui-updates/$WEBUI_ZIP_NAME"
+            WEBUI_UPDATE_PATH="webui-updates/$WEBUI_ZIP_NAME"
+            WEBUI_SIZE=$(wc -c < "webui-updates/$WEBUI_ZIP_NAME" | tr -d ' ')
+            WEBUI_CDN_URL="https://dadamachines.github.io/dada-tbd-firmware/$WEBUI_UPDATE_PATH"
+
+            # Update webui-updates/latest.json
+            WEBUI_LATEST="webui-updates/latest.json"
+            if [ -f "$WEBUI_LATEST" ]; then
+              OLD_VER=$(jq -r '.version // empty' "$WEBUI_LATEST")
+              if [ "$OLD_VER" != "$WEBUI_VERSION" ]; then
+                jq --arg ver "$WEBUI_VERSION" \
+                   --arg date "$(date -u +%Y-%m-%d)" \
+                   --arg desc "Full WebUI update (CI-generated)" \
+                   --arg url "$WEBUI_CDN_URL" \
+                   --argjson size "$WEBUI_SIZE" \
+                   '{version: $ver, date: $date, description: $desc, url: $url, size: $size,
+                    versions: ([{version: .version, date: .date, url: .url, description: .description}]
+                              + (.versions // []))}' \
+                   "$WEBUI_LATEST" > "${WEBUI_LATEST}.tmp" && mv "${WEBUI_LATEST}.tmp" "$WEBUI_LATEST"
+              else
+                jq --arg url "$WEBUI_CDN_URL" --argjson size "$WEBUI_SIZE" \
+                   '.url = $url | .size = $size' \
+                   "$WEBUI_LATEST" > "${WEBUI_LATEST}.tmp" && mv "${WEBUI_LATEST}.tmp" "$WEBUI_LATEST"
+              fi
+            else
+              jq -n --arg ver "$WEBUI_VERSION" --arg date "$(date -u +%Y-%m-%d)" \
+                 --arg desc "Full WebUI update (CI-generated)" \
+                 --arg url "$WEBUI_CDN_URL" --argjson size "$WEBUI_SIZE" \
+                 '{version: $ver, date: $date, description: $desc, url: $url, size: $size}' \
+                 > "$WEBUI_LATEST"
+            fi
+            echo "WebUI: $WEBUI_ZIP_NAME ($WEBUI_SIZE bytes) → webui-updates/"
+          fi
+
+          # ── Build releases.json entry ──
+          if [ -n "$WEBUI_VERSION" ]; then
+            NEW_ENTRY=$(jq -n \
+              --arg tag "$TAG" \
+              --arg ts "$TIMESTAMP" \
+              --arg unified "$P4/$UNIFIED_NAME" \
+              --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
+              --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
+              --arg pico "$PICO_PATH" \
+              --arg wver "$WEBUI_VERSION" \
+              --arg wupd "$WEBUI_UPDATE_PATH" \
+              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico}, webuiVersion: $wver, webuiUpdate: $wupd}')
+          else
+            NEW_ENTRY=$(jq -n \
+              --arg tag "$TAG" \
+              --arg ts "$TIMESTAMP" \
+              --arg unified "$P4/$UNIFIED_NAME" \
+              --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
+              --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
+              --arg pico "$PICO_PATH" \
+              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico}}')
+          fi
 
           if [ -f "$MANIFEST" ]; then
             TMP=$(mktemp)
