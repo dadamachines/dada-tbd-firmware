@@ -1,0 +1,25 @@
+{
+  "id": "tusb-msc-pico",
+  "name": "USB Mass Storage (Pico)",
+  "description": "Exposes the RP2350 SD card as a USB mass storage device for file transfer",
+  "author": {
+    "name": "dadamachines",
+    "github": "dadamachines"
+  },
+  "license": "MIT",
+  "tier": "system",
+  "category": "utility",
+  "tags": ["usb", "mass-storage", "sd-card", "file-transfer"],
+  "sdFilename": "tusb_msc.uf2",
+  "alwaysInstalled": true,
+  "releases": [
+    {
+      "version": "1.0.0",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-23",
+      "sha256": "d9b421c786cfadd8d03ab843718a9f3d785f828ffc1fdbb141935898030592d7",
+      "size": 168960,
+      "changelog": "Initial seed binary"
+    }
+  ]
+}

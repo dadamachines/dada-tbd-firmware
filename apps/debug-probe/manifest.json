@@ -1,0 +1,25 @@
+{
+  "id": "debug-probe",
+  "name": "Debug Probe",
+  "description": "CMSIS-DAP debug probe for flashing STM32 UI firmware via SWD",
+  "author": {
+    "name": "dadamachines",
+    "github": "dadamachines"
+  },
+  "license": "MIT",
+  "tier": "system",
+  "category": "utility",
+  "tags": ["debug", "swd", "cmsis-dap", "openocd", "stm32"],
+  "sdFilename": "dbg_prb.uf2",
+  "alwaysInstalled": true,
+  "releases": [
+    {
+      "version": "1.0.0",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-23",
+      "sha256": "7a935d0ab1440fdaeae1bd17122d56f563c9963d6093c9688ba9f36b0f7cb2c6",
+      "size": 122880,
+      "changelog": "Initial seed binary"
+    }
+  ]
+}

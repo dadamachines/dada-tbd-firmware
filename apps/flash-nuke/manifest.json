@@ -1,0 +1,27 @@
+{
+  "id": "flash-nuke",
+  "name": "Flash Nuke",
+  "description": "Erases the RP2350 flash memory — use to factory-reset the Pico",
+  "author": {
+    "name": "Raspberry Pi",
+    "github": "raspberrypi",
+    "url": "https://www.raspberrypi.com/"
+  },
+  "repo": "https://github.com/raspberrypi/pico-examples",
+  "license": "BSD-3-Clause",
+  "tier": "system",
+  "category": "system",
+  "tags": ["flash", "erase", "reset", "nuke", "system"],
+  "sdFilename": "universal_flash_nuke.uf2",
+  "alwaysInstalled": true,
+  "releases": [
+    {
+      "version": "1.0.0",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-23",
+      "sha256": "3e26888f1393bee4fd0cc6a5191be470910c838feab751cba6c5fa254e9131b6",
+      "size": 28160,
+      "changelog": "Initial seed binary"
+    }
+  ]
+}
