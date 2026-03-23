@@ -1,0 +1,16 @@
+{
+  "channel": "feature-test-test-pipeline",
+  "latest": "feature-test-test-pipeline",
+  "versions": [
+    {
+      "tag": "feature-test-test-pipeline",
+      "timestamp": "2026-03-23T11:53:43Z",
+      "files": {
+        "unified": "feature-test-test-pipeline/p4/dada-tbd-16-feature-test-test-pipeline-unified.bin",
+        "sdcard": "feature-test-test-pipeline/p4/dada-tbd-16-feature-test-test-pipeline-sd.zip",
+        "hash": "feature-test-test-pipeline/p4/dada-tbd-16-feature-test-test-pipeline-sd-hash.txt",
+        "pico": "feature-test-test-pipeline/pico/dada-tbd-16-feature-test-test-pipeline-pico.uf2"
+      }
+    }
+  ]
+}
