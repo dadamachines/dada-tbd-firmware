@@ -102,31 +102,38 @@ jobs:
             WEBUI_SIZE=$(wc -c < "webui-updates/$WEBUI_ZIP_NAME" | tr -d ' ')
             WEBUI_CDN_URL="https://dadamachines.github.io/dada-tbd-firmware/$WEBUI_UPDATE_PATH"
 
-            # Update webui-updates/latest.json
-            WEBUI_LATEST="webui-updates/latest.json"
-            if [ -f "$WEBUI_LATEST" ]; then
-              OLD_VER=$(jq -r '.version // empty' "$WEBUI_LATEST")
-              if [ "$OLD_VER" != "$WEBUI_VERSION" ]; then
-                jq --arg ver "$WEBUI_VERSION" \
-                   --arg date "$(date -u +%Y-%m-%d)" \
-                   --arg desc "Full WebUI update (CI-generated)" \
-                   --arg url "$WEBUI_CDN_URL" \
-                   --argjson size "$WEBUI_SIZE" \
-                   '{version: $ver, date: $date, description: $desc, url: $url, size: $size,
-                    versions: ([{version: .version, date: .date, url: .url, description: .description}]
-                              + (.versions // []))}' \
-                   "$WEBUI_LATEST" > "${WEBUI_LATEST}.tmp" && mv "${WEBUI_LATEST}.tmp" "$WEBUI_LATEST"
+            # Update webui-updates/latest.json — STABLE ONLY
+            # latest.json is what the on-device auto-updater checks. If staging
+            # or feature-test pushed a newer version here, every stable device
+            # would see a spurious (and potentially incompatible) update offer.
+            # Non-stable WebUI zips are still published above (cp -f) so the
+            # flash page can link to them via releases.json → webuiUpdate.
+            if [ "$CHANNEL" = "stable" ]; then
+              WEBUI_LATEST="webui-updates/latest.json"
+              if [ -f "$WEBUI_LATEST" ]; then
+                OLD_VER=$(jq -r '.version // empty' "$WEBUI_LATEST")
+                if [ "$OLD_VER" != "$WEBUI_VERSION" ]; then
+                  jq --arg ver "$WEBUI_VERSION" \
+                     --arg date "$(date -u +%Y-%m-%d)" \
+                     --arg desc "Full WebUI update (CI-generated)" \
+                     --arg url "$WEBUI_CDN_URL" \
+                     --argjson size "$WEBUI_SIZE" \
+                     '{version: $ver, date: $date, description: $desc, url: $url, size: $size,
+                      versions: ([{version: .version, date: .date, url: .url, description: .description}]
+                                + (.versions // []))}' \
+                     "$WEBUI_LATEST" > "${WEBUI_LATEST}.tmp" && mv "${WEBUI_LATEST}.tmp" "$WEBUI_LATEST"
+                else
+                  jq --arg url "$WEBUI_CDN_URL" --argjson size "$WEBUI_SIZE" \
+                     '.url = $url | .size = $size' \
+                     "$WEBUI_LATEST" > "${WEBUI_LATEST}.tmp" && mv "${WEBUI_LATEST}.tmp" "$WEBUI_LATEST"
+                fi
               else
-                jq --arg url "$WEBUI_CDN_URL" --argjson size "$WEBUI_SIZE" \
-                   '.url = $url | .size = $size' \
-                   "$WEBUI_LATEST" > "${WEBUI_LATEST}.tmp" && mv "${WEBUI_LATEST}.tmp" "$WEBUI_LATEST"
+                jq -n --arg ver "$WEBUI_VERSION" --arg date "$(date -u +%Y-%m-%d)" \
+                   --arg desc "Full WebUI update (CI-generated)" \
+                   --arg url "$WEBUI_CDN_URL" --argjson size "$WEBUI_SIZE" \
+                   '{version: $ver, date: $date, description: $desc, url: $url, size: $size}' \
+                   > "$WEBUI_LATEST"
               fi
-            else
-              jq -n --arg ver "$WEBUI_VERSION" --arg date "$(date -u +%Y-%m-%d)" \
-                 --arg desc "Full WebUI update (CI-generated)" \
-                 --arg url "$WEBUI_CDN_URL" --argjson size "$WEBUI_SIZE" \
-                 '{version: $ver, date: $date, description: $desc, url: $url, size: $size}' \
-                 > "$WEBUI_LATEST"
             fi
             echo "WebUI: $WEBUI_ZIP_NAME ($WEBUI_SIZE bytes) → webui-updates/"
           fi
