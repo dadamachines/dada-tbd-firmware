@@ -1,0 +1,15 @@
+{
+  "name": "TBD-16 v0.4 Pico SD Bundle",
+  "target": "tbd-16",
+  "firmwareTrain": "0.4",
+  "bootloader": {
+    "version": "1.1.0",
+    "sha256": "ee416febee4e749dc1e2c1f193a367a5cba6ee8f69aa94309c715bd8b99da60d"
+  },
+  "apps": [
+    { "id": "groovebox",    "version": "0.4.1" },
+    { "id": "tusb-msc-pico","version": "1.0.0" },
+    { "id": "debug-probe",  "version": "1.0.0" },
+    { "id": "game",         "version": "1.0.0" }
+  ]
+}

@@ -1,0 +1,106 @@
+name: Build Pico SD Curated Bundle
+on:
+  workflow_dispatch:
+    inputs:
+      train:
+        description: 'MAJOR.MINOR train (e.g. 0.4)'
+        required: true
+      target:
+        description: 'Hardware target'
+        required: true
+        default: 'tbd-16'
+        type: choice
+        options: [tbd-16, tbd-core]
+
+permissions:
+  contents: write
+
+jobs:
+  bundle-pico-sd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out CDN repo
+        uses: actions/checkout@v4
+
+      - name: Read bundle definition
+        id: bundle
+        run: |
+          TRAIN="${{ inputs.train }}"
+          TARGET="${{ inputs.target }}"
+          BUNDLE="bundles/${TARGET}-v${TRAIN}.json"
+
+          if [ ! -f "$BUNDLE" ]; then
+            echo "::error::No bundle definition at ${BUNDLE}"
+            exit 1
+          fi
+          echo "bundle=${BUNDLE}" >> "$GITHUB_OUTPUT"
+          echo "train=${TRAIN}" >> "$GITHUB_OUTPUT"
+          echo "target=${TARGET}" >> "$GITHUB_OUTPUT"
+
+      - name: Download BOOT2350.uf2 and bundled apps
+        run: |
+          set -euo pipefail
+          mkdir -p picosd-staging/tbd-apps
+          BUNDLE="${{ steps.bundle.outputs.bundle }}"
+          CDN_BASE="https://dadamachines.github.io/dada-tbd-firmware"
+
+          # Download BOOT2350.uf2 from bootloader sd-card/
+          BOOT_VER=$(jq -r '.bootloader.version' "$BUNDLE")
+          BOOT_SHA=$(jq -r '.bootloader.sha256' "$BUNDLE")
+          BOOT_URL="${CDN_BASE}/apps/bootloader/sd-card/BOOT2350.uf2"
+          echo "Downloading BOOT2350.uf2 (bootloader v${BOOT_VER})"
+          curl -fsSL -o picosd-staging/BOOT2350.uf2 "$BOOT_URL"
+          echo "${BOOT_SHA}  picosd-staging/BOOT2350.uf2" | sha256sum -c -
+
+          # Download each app
+          for APP_ID in $(jq -r '.apps[].id' "$BUNDLE"); do
+            APP_VER=$(jq -r ".apps[] | select(.id==\"${APP_ID}\") | .version" "$BUNDLE")
+            MANIFEST="apps/${APP_ID}/manifest.json"
+
+            if [ ! -f "$MANIFEST" ]; then
+              echo "::error::Missing manifest: ${MANIFEST}"
+              exit 1
+            fi
+
+            SD_NAME=$(jq -r '.sdFilename' "$MANIFEST")
+            DL_SHA=$(jq -r ".releases[] | select(.version==\"${APP_VER}\") | .sha256" "$MANIFEST")
+
+            # Use cdnPath if set, otherwise construct from convention
+            CDN_PATH=$(jq -r ".releases[] | select(.version==\"${APP_VER}\") | .cdnPath // empty" "$MANIFEST")
+            if [ -n "$CDN_PATH" ]; then
+              DL_URL="${CDN_BASE}/${CDN_PATH}"
+            else
+              DL_URL="${CDN_BASE}/apps/${APP_ID}/${APP_ID}-${APP_VER}.uf2"
+            fi
+
+            echo "Downloading ${APP_ID} v${APP_VER} → tbd-apps/${SD_NAME}"
+            curl -fsSL -o "picosd-staging/tbd-apps/${SD_NAME}" "$DL_URL"
+            echo "${DL_SHA}  picosd-staging/tbd-apps/${SD_NAME}" | sha256sum -c -
+          done
+
+      - name: Build bundle ZIP
+        id: zip
+        run: |
+          TARGET="${{ steps.bundle.outputs.target }}"
+          TRAIN="${{ steps.bundle.outputs.train }}"
+          cd picosd-staging
+          echo "${TRAIN}" > bundle-version.txt
+          ZIP_NAME="dada-${TARGET}-picosd-v${TRAIN}.zip"
+          zip -r "../${ZIP_NAME}" .
+          echo "zip_name=${ZIP_NAME}" >> "$GITHUB_OUTPUT"
+          echo "--- Bundle contents ---"
+          ls -lR .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "picosd-${{ steps.bundle.outputs.target }}-v${{ steps.bundle.outputs.train }}"
+          name: "Pico SD Bundle — ${{ steps.bundle.outputs.target }} v${{ steps.bundle.outputs.train }}"
+          body: |
+            Pico SD card bundle for the v${{ steps.bundle.outputs.train }}.x firmware train.
+
+            Contains `BOOT2350.uf2` + all default apps. Extract to the Pico SD card.
+
+            **Apps included:**
+            $(jq -r '.apps[] | "- \(.id) v\(.version)"' "${{ steps.bundle.outputs.bundle }}")
+          files: ${{ steps.zip.outputs.zip_name }}

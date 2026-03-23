@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TBD Pico SD Bundle",
+  "description": "Bundle definition for curated Pico SD card images targeting a specific MAJOR.MINOR firmware train",
+  "type": "object",
+  "required": ["name", "target", "firmwareTrain", "bootloader", "apps"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable bundle name"
+    },
+    "target": {
+      "type": "string",
+      "enum": ["tbd-16", "tbd-core"],
+      "description": "Hardware target this bundle is built for"
+    },
+    "firmwareTrain": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "MAJOR.MINOR firmware train this bundle targets (e.g. 0.4)"
+    },
+    "bootloader": {
+      "type": "object",
+      "required": ["version", "sha256"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Bootloader version"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "SHA-256 of BOOT2350.uf2"
+        }
+      },
+      "description": "BOOT2350.uf2 placed at SD card root for the UF2 bootloader"
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "version"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$",
+            "description": "App ID matching apps/<id>/manifest.json"
+          },
+          "version": {
+            "type": "string",
+            "description": "Pinned version from the app's releases[]"
+          }
+        }
+      },
+      "description": "Apps to include in the bundle (placed under tbd-apps/ using each app's sdFilename)"
+    }
+  }
+}
