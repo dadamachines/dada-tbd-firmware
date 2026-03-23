@@ -111,14 +111,13 @@ jobs:
           echo "Placed: $CHANNEL/pico/$VERSIONED_NAME"
           echo "Placed: apps/$APP_ID/$APP_BINARY"
 
-          # Update channel latest.json pico fields
-          if [ -f "$CHANNEL/latest.json" ]; then
-            # Update pico field in existing manifest
+          # Update channel releases.json — patch pico fields on latest version
+          if [ -f "$CHANNEL/releases.json" ]; then
             TMP=$(mktemp)
             jq --arg pico "$CHANNEL/pico/$VERSIONED_NAME" \
                --arg ver "$VERSION" \
-               '.files.pico = $pico | .picoVersion = $ver' \
-               "$CHANNEL/latest.json" > "$TMP" && mv "$TMP" "$CHANNEL/latest.json"
+               '.picoVersion = $ver | .versions[0].files.pico = $pico' \
+               "$CHANNEL/releases.json" > "$TMP" && mv "$TMP" "$CHANNEL/releases.json"
           fi
 
           # Write pico version file
