@@ -7,7 +7,7 @@
 5) copy all files from sd-card onto root of rp2350 sd-card
 6) eject rp2350 sd-card properly
 7) bring rp2350 again into bootloader mode (see step 2)
-8) flash rp2350 with bootloader_pico2.uf2
+8) flash rp2350 with bootloader-1.1.0.uf2
 9) reboot rp2350
 
 Alternatively, you can flash ui_test.uf2 in bootloader mode (step 1+2) to interact with legacy tbd firmware directly without custom bootloader.
