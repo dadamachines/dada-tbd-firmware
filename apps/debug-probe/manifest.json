@@ -9,7 +9,13 @@
   "license": "MIT",
   "tier": "system",
   "category": "utility",
-  "tags": ["debug", "swd", "cmsis-dap", "openocd", "stm32"],
+  "tags": [
+    "debug",
+    "swd",
+    "cmsis-dap",
+    "openocd",
+    "stm32"
+  ],
   "sdFilename": "dbg_prb.uf2",
   "alwaysInstalled": true,
   "releases": [
@@ -19,7 +25,8 @@
       "date": "2026-03-23",
       "sha256": "7a935d0ab1440fdaeae1bd17122d56f563c9963d6093c9688ba9f36b0f7cb2c6",
       "size": 122880,
-      "changelog": "Initial seed binary"
+      "changelog": "Initial seed binary",
+      "cdnPath": "apps/debug-probe/debug-probe-1.0.0.uf2"
     }
   ]
 }

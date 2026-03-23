@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-23T16:05:27Z",
+  "generated": "2026-03-23T16:36:45Z",
   "apps": [
     {
       "id": "bootloader",
@@ -26,7 +26,8 @@
           "date": "2026-03-23",
           "sha256": "e3c5af9c013c2dbff4e179c112c6237d4720e2fe95c095b24b3cc45002fa89b7",
           "size": 14336,
-          "changelog": "Initial seed binary (v1.1 bootloader with boot menu)"
+          "changelog": "Initial seed binary (v1.1 bootloader with boot menu)",
+          "cdnPath": "apps/bootloader/bootloader-1.1.0.uf2"
         }
       ]
     },
@@ -57,7 +58,8 @@
           "date": "2026-03-23",
           "sha256": "7a935d0ab1440fdaeae1bd17122d56f563c9963d6093c9688ba9f36b0f7cb2c6",
           "size": 122880,
-          "changelog": "Initial seed binary"
+          "changelog": "Initial seed binary",
+          "cdnPath": "apps/debug-probe/debug-probe-1.0.0.uf2"
         }
       ]
     },
@@ -90,7 +92,8 @@
           "date": "2026-03-23",
           "sha256": "3e26888f1393bee4fd0cc6a5191be470910c838feab751cba6c5fa254e9131b6",
           "size": 28160,
-          "changelog": "Initial seed binary"
+          "changelog": "Initial seed binary",
+          "cdnPath": "apps/flash-nuke/flash-nuke-1.0.0.uf2"
         }
       ]
     },
@@ -117,7 +120,8 @@
           "date": "2026-03-23",
           "sha256": "defd57f9d44e9473851888a04ad30e0163849b788debb99ba688d76ff684f35d",
           "size": 33792,
-          "changelog": "Initial seed binary"
+          "changelog": "Initial seed binary",
+          "cdnPath": "apps/game/game-1.0.0.uf2"
         }
       ]
     },
@@ -148,7 +152,8 @@
           "date": "2026-03-23",
           "sha256": "906f3a60aa97e944e6248747f52cbde022a4e70785bf9d010dfcfbdabb4387ff",
           "size": 808960,
-          "changelog": "Initial seed binary matching firmware v0.4.1"
+          "changelog": "Initial seed binary matching firmware v0.4.1",
+          "cdnPath": "apps/groovebox/groovebox-0.4.1.uf2"
         }
       ]
     },
@@ -178,7 +183,8 @@
           "date": "2026-03-23",
           "sha256": "d9b421c786cfadd8d03ab843718a9f3d785f828ffc1fdbb141935898030592d7",
           "size": 168960,
-          "changelog": "Initial seed binary"
+          "changelog": "Initial seed binary",
+          "cdnPath": "apps/tusb-msc-pico/tusb-msc-pico-1.0.0.uf2"
         }
       ]
     }

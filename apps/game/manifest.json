@@ -9,7 +9,10 @@
   "license": "MIT",
   "tier": "official",
   "category": "utility",
-  "tags": ["game", "demo"],
+  "tags": [
+    "game",
+    "demo"
+  ],
   "sdFilename": "game.uf2",
   "releases": [
     {
@@ -18,7 +21,8 @@
       "date": "2026-03-23",
       "sha256": "defd57f9d44e9473851888a04ad30e0163849b788debb99ba688d76ff684f35d",
       "size": 33792,
-      "changelog": "Initial seed binary"
+      "changelog": "Initial seed binary",
+      "cdnPath": "apps/game/game-1.0.0.uf2"
     }
   ]
 }

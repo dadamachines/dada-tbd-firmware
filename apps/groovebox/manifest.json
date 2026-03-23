@@ -11,7 +11,12 @@
   "license": "MIT",
   "tier": "official",
   "category": "instrument",
-  "tags": ["sequencer", "drums", "midi", "link"],
+  "tags": [
+    "sequencer",
+    "drums",
+    "midi",
+    "link"
+  ],
   "sdFilename": "groovebox.uf2",
   "releases": [
     {
@@ -20,7 +25,8 @@
       "date": "2026-03-23",
       "sha256": "906f3a60aa97e944e6248747f52cbde022a4e70785bf9d010dfcfbdabb4387ff",
       "size": 808960,
-      "changelog": "Initial seed binary matching firmware v0.4.1"
+      "changelog": "Initial seed binary matching firmware v0.4.1",
+      "cdnPath": "apps/groovebox/groovebox-0.4.1.uf2"
     }
   ]
 }

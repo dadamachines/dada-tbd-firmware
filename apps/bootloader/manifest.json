@@ -9,7 +9,11 @@
   "license": "MIT",
   "tier": "system",
   "category": "system",
-  "tags": ["bootloader", "boot-menu", "system"],
+  "tags": [
+    "bootloader",
+    "boot-menu",
+    "system"
+  ],
   "sdFilename": "BOOT2350.uf2",
   "alwaysInstalled": true,
   "releases": [
@@ -19,7 +23,8 @@
       "date": "2026-03-23",
       "sha256": "e3c5af9c013c2dbff4e179c112c6237d4720e2fe95c095b24b3cc45002fa89b7",
       "size": 14336,
-      "changelog": "Initial seed binary (v1.1 bootloader with boot menu)"
+      "changelog": "Initial seed binary (v1.1 bootloader with boot menu)",
+      "cdnPath": "apps/bootloader/bootloader-1.1.0.uf2"
     }
   ]
 }
