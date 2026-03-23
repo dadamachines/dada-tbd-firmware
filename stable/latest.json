@@ -1,9 +1,10 @@
 {
-  "tag": "v0.4.1",
+  "tag": "v0.4.2",
   "channel": "stable",
-  "timestamp": "2026-03-21T20:23:17Z",
+  "compatRange": "0.4",
+  "timestamp": "2026-03-23T09:49:32Z",
   "files": {
-    "unified": "stable/p4/dada-tbd-16-v0.4.1-unified.bin",
+    "unified": "stable/p4/dada-tbd-16-v0.4.2-unified.bin",
     "p4": "stable/p4/dada-tbd.bin",
     "bootloader": "stable/p4/bootloader.bin",
     "partition_table": "stable/p4/partition-table.bin",
