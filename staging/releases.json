@@ -1,0 +1,16 @@
+{
+  "channel": "staging",
+  "latest": "staging-v0.4.2-3",
+  "versions": [
+    {
+      "tag": "staging-v0.4.2-3",
+      "timestamp": "2026-03-23T11:54:19Z",
+      "files": {
+        "unified": "staging/p4/dada-tbd-16-staging-v0.4.2-3-unified.bin",
+        "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.2-3-sd.zip",
+        "hash": "staging/p4/dada-tbd-16-staging-v0.4.2-3-sd-hash.txt",
+        "pico": "staging/pico/dada-tbd-16-staging-v0.4.2-3-pico.uf2"
+      }
+    }
+  ]
+}
