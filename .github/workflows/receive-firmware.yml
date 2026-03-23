@@ -39,39 +39,33 @@ jobs:
           echo "Channel: $CHANNEL  Tag: $TAG"
 
           P4="$CHANNEL/p4"
-          mkdir -p "$P4" "$P4/$TAG" "$CHANNEL/pico"
+          mkdir -p "$P4" "$CHANNEL/pico"
 
           # ── Device prefix: all CDN binaries self-identify as TBD-16 ──
           DEV="dada-tbd-16"
 
-          # ── Latest copies (convenience aliases — overwritten each release) ──
-          cp -f incoming/build/dada-tbd.bin                         "$P4/${DEV}-app.bin"            2>/dev/null || true
-          cp -f incoming/build/bootloader/bootloader.bin            "$P4/${DEV}-bootloader.bin"     2>/dev/null || true
-          cp -f incoming/build/partition_table/partition-table.bin   "$P4/${DEV}-partitions.bin"     2>/dev/null || true
-          cp -f incoming/build/ota_data_initial.bin                 "$P4/${DEV}-otadata.bin"        2>/dev/null || true
-          cp -f incoming/build/dada-tbd-sd.zip                      "$P4/${DEV}-sd.zip"             2>/dev/null || true
-          cp -f incoming/build/dada-tbd-sd-hash.txt                 "$P4/${DEV}-sd-hash.txt"        2>/dev/null || true
-
-          # ── Versioned archive: {channel}/p4/{tag}/ ──
-          # Each release keeps its SD zip + hash so older versions remain
-          # available for Path B (full SD card deploy).
-          cp -f incoming/build/dada-tbd-sd.zip       "$P4/$TAG/${DEV}-sd.zip"       2>/dev/null || true
-          cp -f incoming/build/dada-tbd-sd-hash.txt  "$P4/$TAG/${DEV}-sd-hash.txt"  2>/dev/null || true
-
-          # ── Unified image (versioned — accumulates in p4/) ──
+          # ── Unified image (the only P4 flash binary on CDN) ──
           UNIFIED_SRC=$(find incoming/ -name '*-unified.bin' -print -quit)
           UNIFIED_NAME="${DEV}-${TAG}-unified.bin"
           if [ -n "$UNIFIED_SRC" ]; then
             cp -f "$UNIFIED_SRC" "$P4/$UNIFIED_NAME"
           fi
 
-          # ── tusb_msc — seed from stable if not yet in this channel ──
-          if [ ! -f "$P4/${DEV}-tusb-msc.bin" ] && [ -f "stable/p4/${DEV}-tusb-msc.bin" ]; then
-            cp -f "stable/p4/${DEV}-tusb-msc.bin" "$P4/${DEV}-tusb-msc.bin"
-          fi
-          # Migrate: accept old name from stable if new name doesn't exist yet
-          if [ ! -f "$P4/${DEV}-tusb-msc.bin" ] && [ -f "stable/p4/tusb_msc.bin" ]; then
-            cp -f "stable/p4/tusb_msc.bin" "$P4/${DEV}-tusb-msc.bin"
+          # ── SD card image (versioned filenames) ──
+          cp -f incoming/build/dada-tbd-sd.zip       "$P4/${DEV}-${TAG}-sd.zip"       2>/dev/null || true
+          cp -f incoming/build/dada-tbd-sd-hash.txt  "$P4/${DEV}-${TAG}-sd-hash.txt"  2>/dev/null || true
+
+          # ── tusb_msc — shared utility app, lives in apps/tusb-msc/ ──
+          # Only placed once; not duplicated per channel.
+          mkdir -p apps/tusb-msc
+          if [ ! -f "apps/tusb-msc/${DEV}-tusb-msc.bin" ]; then
+            # Migrate from old per-channel locations
+            for SRC in "stable/p4/${DEV}-tusb-msc.bin" "stable/p4/tusb_msc.bin"; do
+              if [ -f "$SRC" ]; then
+                cp -f "$SRC" "apps/tusb-msc/${DEV}-tusb-msc.bin"
+                break
+              fi
+            done
           fi
 
           # ── Pico firmware ──
@@ -83,19 +77,18 @@ jobs:
             cp -f "stable/pico/dada-tbd-pico.uf2" "$CHANNEL/pico/$PICO_NAME"
           fi
 
-          # ── Build releases.json (channel catalog with version history) ──
+          # ── Build releases.json ──
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           MANIFEST="$CHANNEL/releases.json"
 
-          # Per-version entry
           NEW_ENTRY=$(cat <<ENTRY
           {
             "tag": "$TAG",
             "timestamp": "$TIMESTAMP",
             "files": {
               "unified": "$P4/$UNIFIED_NAME",
-              "sdcard": "$P4/$TAG/${DEV}-sd.zip",
-              "hash": "$P4/$TAG/${DEV}-sd-hash.txt",
+              "sdcard": "$P4/${DEV}-${TAG}-sd.zip",
+              "hash": "$P4/${DEV}-${TAG}-sd-hash.txt",
               "pico": "$CHANNEL/pico/$PICO_NAME"
             }
           }
@@ -103,24 +96,29 @@ jobs:
           )
 
           if [ -f "$MANIFEST" ]; then
-            # Prepend new version (remove duplicate tag if re-releasing)
             TMP=$(mktemp)
             echo "$NEW_ENTRY" | jq --arg tag "$TAG" \
               --slurpfile existing "$MANIFEST" \
               '$existing[0] | .latest = $tag | .versions = ([input] + [.versions[] | select(.tag != $tag)])' \
               - > "$TMP" && mv "$TMP" "$MANIFEST"
           else
-            # First release for this channel
-            echo "$NEW_ENTRY" | jq --arg ch "$CHANNEL" --arg tag "$TAG" --arg dev "$DEV" \
-              '{channel: $ch, latest: $tag, shared: {tusb_msc: ($ch + "/p4/" + $dev + "-tusb-msc.bin"), app: ($ch + "/p4/" + $dev + "-app.bin"), bootloader: ($ch + "/p4/" + $dev + "-bootloader.bin"), partitions: ($ch + "/p4/" + $dev + "-partitions.bin"), otadata: ($ch + "/p4/" + $dev + "-otadata.bin")}, versions: [input]}' \
+            echo "$NEW_ENTRY" | jq --arg ch "$CHANNEL" --arg tag "$TAG" \
+              '{channel: $ch, latest: $tag, versions: [input]}' \
               - > "$MANIFEST"
           fi
 
-          # Clean up old naming artifacts
+          # ── Clean up legacy files ──
           rm -f "$CHANNEL/latest.json"
           rm -f "$P4/dada-tbd.bin" "$P4/bootloader.bin" "$P4/partition-table.bin"
-          rm -f "$P4/ota_data_initial.bin" "$P4/dada-tbd-sd.zip" "$P4/dada-tbd-sd-hash.txt"
+          rm -f "$P4/ota_data_initial.bin"
           rm -f "$P4/tusb_msc.bin"
+          rm -f "$P4/${DEV}-app.bin" "$P4/${DEV}-bootloader.bin"
+          rm -f "$P4/${DEV}-partitions.bin" "$P4/${DEV}-otadata.bin"
+          rm -f "$P4/${DEV}-tusb-msc.bin"
+          rm -f "$P4/${DEV}-sd.zip" "$P4/${DEV}-sd-hash.txt"
+          rm -f "$P4/dada-tbd-sd.zip" "$P4/dada-tbd-sd-hash.txt"
+          # Remove old version subdirectories (version is now in filename)
+          find "$P4" -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} + 2>/dev/null || true
 
           rm -rf incoming/
 

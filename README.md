@@ -7,29 +7,9 @@ Firmware CDN and App Catalog for [dadamachines TBD-16](https://dadamachines.com)
 ## Structure
 
 ```
-stable/                    ← latest stable release (dispatch-only)
-  releases.json            ← channel catalog (versions array, shared file paths)
-  p4/                      ← ESP32-P4 firmware binaries
-    dada-tbd-16-app.bin             ← latest app firmware
-    dada-tbd-16-bootloader.bin      ← latest bootloader
-    dada-tbd-16-partitions.bin      ← latest partition table
-    dada-tbd-16-otadata.bin         ← latest OTA data
-    dada-tbd-16-sd.zip              ← latest SD card image
-    dada-tbd-16-sd-hash.txt         ← latest SD card hash
-    dada-tbd-16-tusb-msc.bin        ← USB mass storage firmware
-    dada-tbd-16-v0.5.0-unified.bin  ← versioned unified image (accumulates)
-    v0.5.0/                         ← version archive
-      dada-tbd-16-sd.zip
-      dada-tbd-16-sd-hash.txt
-    v0.4.2/                         ← older version archive
-      dada-tbd-16-sd.zip
-      dada-tbd-16-sd-hash.txt
-  pico/                    ← RP2350 firmware
-    dada-tbd-pico.uf2               ← latest (source for versioned copies)
-    dada-tbd-16-v0.5.0-pico.uf2    ← versioned (accumulates)
-staging/                   ← staging pre-releases (same layout)
-feature-test-*/            ← ephemeral feature channels
-apps/                      ← app registry (PR-reviewed)
+apps/                      ← shared utility apps + app catalog
+  tusb-msc/
+    dada-tbd-16-tusb-msc.bin        ← USB mass storage firmware (shared, not per-channel)
   groovebox/
     manifest.json          ← app metadata, release info, SHA-256
     README.md
@@ -37,6 +17,20 @@ apps/                      ← app registry (PR-reviewed)
   mcl/
     manifest.json
     ...
+stable/                    ← latest stable release (dispatch-only)
+  releases.json            ← channel catalog (versions array)
+  p4/                      ← ESP32-P4 firmware
+    dada-tbd-16-v0.5.0-unified.bin  ← unified flash image (versioned)
+    dada-tbd-16-v0.5.0-sd.zip       ← SD card image (versioned)
+    dada-tbd-16-v0.5.0-sd-hash.txt  ← SD card hash (versioned)
+    dada-tbd-16-v0.4.2-unified.bin  ← older releases accumulate
+    dada-tbd-16-v0.4.2-sd.zip
+    dada-tbd-16-v0.4.2-sd-hash.txt
+  pico/                    ← RP2350 firmware
+    dada-tbd-pico.uf2               ← latest (source for versioned copies)
+    dada-tbd-16-v0.5.0-pico.uf2    ← versioned (accumulates)
+staging/                   ← staging pre-releases (same layout)
+feature-test-*/            ← ephemeral feature channels
 schema/                    ← JSON schemas
   manifest.schema.json
 app-catalog.json           ← auto-generated from apps/*/manifest.json
