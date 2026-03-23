@@ -2,7 +2,7 @@
   "tag": "v0.4.2",
   "channel": "stable",
   "compatRange": "0.4",
-  "timestamp": "2026-03-23T09:49:32Z",
+  "timestamp": "2026-03-23T09:55:26Z",
   "files": {
     "unified": "stable/p4/dada-tbd-16-v0.4.2-unified.bin",
     "p4": "stable/p4/dada-tbd.bin",
