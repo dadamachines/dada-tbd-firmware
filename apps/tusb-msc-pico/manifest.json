@@ -20,19 +20,21 @@
   "releases": [
     {
       "version": "2.0.0",
+      "target": "flash",
       "firmwareCompat": "0.4",
       "date": "2026-03-23",
       "sha256": "feb1943c9e6268b8ba1748d682b3ad3c818a720cbffd36b15768b9cb26145963",
       "size": 208384,
-      "changelog": "Rebuilt from source. Targets flash 0x10000000. SdFat PIO SDIO."
+      "changelog": "Flash-targeted (0x10000000). For Picoboot WebUSB flashing."
     },
     {
       "version": "1.0.0",
+      "target": "ram",
       "firmwareCompat": "0.4",
       "date": "2026-03-23",
       "sha256": "d9b421c786cfadd8d03ab843718a9f3d785f828ffc1fdbb141935898030592d7",
       "size": 168960,
-      "changelog": "Initial seed binary (RAM target, deprecated)",
+      "changelog": "RAM-targeted (0x20000000). For SD card — bootloader loads into RAM.",
       "cdnPath": "apps/tusb-msc-pico/tusb-msc-pico-1.0.0.uf2"
     }
   ]
