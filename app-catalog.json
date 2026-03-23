@@ -1,6 +1,126 @@
 {
-  "generated": "2026-03-22T14:06:48Z",
+  "generated": "2026-03-23T16:05:27Z",
   "apps": [
+    {
+      "id": "bootloader",
+      "name": "TBD Bootloader",
+      "description": "Custom bootloader with boot menu for selecting and flashing RP2350 apps from SD card",
+      "author": {
+        "name": "dadamachines",
+        "github": "dadamachines"
+      },
+      "license": "MIT",
+      "tier": "system",
+      "category": "system",
+      "tags": [
+        "bootloader",
+        "boot-menu",
+        "system"
+      ],
+      "sdFilename": "BOOT2350.uf2",
+      "alwaysInstalled": true,
+      "releases": [
+        {
+          "version": "1.1.0",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-23",
+          "sha256": "e3c5af9c013c2dbff4e179c112c6237d4720e2fe95c095b24b3cc45002fa89b7",
+          "size": 14336,
+          "changelog": "Initial seed binary (v1.1 bootloader with boot menu)"
+        }
+      ]
+    },
+    {
+      "id": "debug-probe",
+      "name": "Debug Probe",
+      "description": "CMSIS-DAP debug probe for flashing STM32 UI firmware via SWD",
+      "author": {
+        "name": "dadamachines",
+        "github": "dadamachines"
+      },
+      "license": "MIT",
+      "tier": "system",
+      "category": "utility",
+      "tags": [
+        "debug",
+        "swd",
+        "cmsis-dap",
+        "openocd",
+        "stm32"
+      ],
+      "sdFilename": "dbg_prb.uf2",
+      "alwaysInstalled": true,
+      "releases": [
+        {
+          "version": "1.0.0",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-23",
+          "sha256": "7a935d0ab1440fdaeae1bd17122d56f563c9963d6093c9688ba9f36b0f7cb2c6",
+          "size": 122880,
+          "changelog": "Initial seed binary"
+        }
+      ]
+    },
+    {
+      "id": "flash-nuke",
+      "name": "Flash Nuke",
+      "description": "Erases the RP2350 flash memory — use to factory-reset the Pico",
+      "author": {
+        "name": "Raspberry Pi",
+        "github": "raspberrypi",
+        "url": "https://www.raspberrypi.com/"
+      },
+      "repo": "https://github.com/raspberrypi/pico-examples",
+      "license": "BSD-3-Clause",
+      "tier": "system",
+      "category": "system",
+      "tags": [
+        "flash",
+        "erase",
+        "reset",
+        "nuke",
+        "system"
+      ],
+      "sdFilename": "universal_flash_nuke.uf2",
+      "alwaysInstalled": true,
+      "releases": [
+        {
+          "version": "1.0.0",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-23",
+          "sha256": "3e26888f1393bee4fd0cc6a5191be470910c838feab751cba6c5fa254e9131b6",
+          "size": 28160,
+          "changelog": "Initial seed binary"
+        }
+      ]
+    },
+    {
+      "id": "game",
+      "name": "Game",
+      "description": "Game demo for the RP2350",
+      "author": {
+        "name": "dadamachines",
+        "github": "dadamachines"
+      },
+      "license": "MIT",
+      "tier": "official",
+      "category": "utility",
+      "tags": [
+        "game",
+        "demo"
+      ],
+      "sdFilename": "game.uf2",
+      "releases": [
+        {
+          "version": "1.0.0",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-23",
+          "sha256": "defd57f9d44e9473851888a04ad30e0163849b788debb99ba688d76ff684f35d",
+          "size": 33792,
+          "changelog": "Initial seed binary"
+        }
+      ]
+    },
     {
       "id": "groovebox",
       "name": "Groovebox",
@@ -21,7 +141,46 @@
         "link"
       ],
       "sdFilename": "groovebox.uf2",
-      "releases": []
+      "releases": [
+        {
+          "version": "0.4.1",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-23",
+          "sha256": "906f3a60aa97e944e6248747f52cbde022a4e70785bf9d010dfcfbdabb4387ff",
+          "size": 808960,
+          "changelog": "Initial seed binary matching firmware v0.4.1"
+        }
+      ]
+    },
+    {
+      "id": "tusb-msc-pico",
+      "name": "USB Mass Storage (Pico)",
+      "description": "Exposes the RP2350 SD card as a USB mass storage device for file transfer",
+      "author": {
+        "name": "dadamachines",
+        "github": "dadamachines"
+      },
+      "license": "MIT",
+      "tier": "system",
+      "category": "utility",
+      "tags": [
+        "usb",
+        "mass-storage",
+        "sd-card",
+        "file-transfer"
+      ],
+      "sdFilename": "tusb_msc.uf2",
+      "alwaysInstalled": true,
+      "releases": [
+        {
+          "version": "1.0.0",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-23",
+          "sha256": "d9b421c786cfadd8d03ab843718a9f3d785f828ffc1fdbb141935898030592d7",
+          "size": 168960,
+          "changelog": "Initial seed binary"
+        }
+      ]
     }
   ]
 }
