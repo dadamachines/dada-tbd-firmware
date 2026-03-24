@@ -19,6 +19,15 @@
   "alwaysInstalled": true,
   "releases": [
     {
+      "version": "3.0.0",
+      "target": "ram",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-24",
+      "sha256": "5da03adf0a20c3802f39c00ed9e71454440ad444d5e77bd6dd1a8728dbac720f",
+      "size": 146944,
+      "changelog": "OLED feedback: boot/mounting/ready/eject status. PICO_NO_FLASH fix for stable startup."
+    },
+    {
       "version": "2.0.0",
       "target": "flash",
       "firmwareCompat": "0.4",
