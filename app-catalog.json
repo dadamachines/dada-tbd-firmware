@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-24T11:21:33Z",
+  "generated": "2026-03-24T11:26:24Z",
   "apps": [
     {
       "id": "bootloader",
@@ -191,7 +191,8 @@
           "date": "2026-03-23",
           "sha256": "feb1943c9e6268b8ba1748d682b3ad3c818a720cbffd36b15768b9cb26145963",
           "size": 208384,
-          "changelog": "Flash-targeted (0x10000000). For Picoboot WebUSB flashing."
+          "changelog": "Flash-targeted (0x10000000). For Picoboot WebUSB flashing.",
+          "cdnPath": "apps/tusb-msc-pico/tusb-msc-pico-2.0.0.uf2"
         },
         {
           "version": "1.0.0",
