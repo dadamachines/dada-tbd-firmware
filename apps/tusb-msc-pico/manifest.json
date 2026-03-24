@@ -19,6 +19,15 @@
   "alwaysInstalled": true,
   "releases": [
     {
+      "version": "3.1.0",
+      "target": "flash",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-24",
+      "sha256": "d7d77670b95b0b6a96c418c8356ed78366e80339507ae8b19fba723c5a0eaff3",
+      "size": 236544,
+      "changelog": "Flash-targeted with OLED feedback. For Picoboot WebUSB flashing."
+    },
+    {
       "version": "3.0.0",
       "target": "ram",
       "firmwareCompat": "0.4",
