@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-24T12:49:13Z",
+  "generated": "2026-03-24T13:02:32Z",
   "apps": [
     {
       "id": "bootloader",
@@ -184,6 +184,16 @@
       "sdFilename": "tusb_msc.uf2",
       "alwaysInstalled": true,
       "releases": [
+        {
+          "version": "3.1.0",
+          "target": "flash",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-24",
+          "sha256": "d7d77670b95b0b6a96c418c8356ed78366e80339507ae8b19fba723c5a0eaff3",
+          "size": 236544,
+          "changelog": "Flash-targeted with OLED feedback. For Picoboot WebUSB flashing.",
+          "cdnPath": "apps/tusb-msc-pico/tusb-msc-pico-3.1.0.uf2"
+        },
         {
           "version": "3.0.0",
           "target": "ram",
