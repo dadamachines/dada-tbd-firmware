@@ -1,0 +1,33 @@
+{
+  "id": "ui-test",
+  "name": "UI Test",
+  "description": "Default TBD-16 app — MIDI routing, OLED display, NeoPixels, encoder/button UI, and SPI API to the ESP32-P4 DSP engine",
+  "author": {
+    "name": "dadamachines",
+    "github": "dadamachines"
+  },
+  "license": "LGPL-3.0",
+  "tier": "system",
+  "category": "utility",
+  "tags": [
+    "ui",
+    "midi",
+    "oled",
+    "neopixel",
+    "default"
+  ],
+  "sdFilename": "ui_test.uf2",
+  "alwaysInstalled": true,
+  "releases": [
+    {
+      "version": "1.0.0",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-24",
+      "sha256": "ba826313d2746c792c0c0a7cfa3946862c1bb9796b27e58e91a09aea54e32ae6",
+      "size": 351232,
+      "target": "flash",
+      "changelog": "Initial release — built from dada-tbd-app-template main branch",
+      "cdnPath": "apps/ui-test/ui-test-1.0.0.uf2"
+    }
+  ]
+}
