@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-23T18:08:16Z",
+  "generated": "2026-03-24T11:21:33Z",
   "apps": [
     {
       "id": "bootloader",
@@ -66,13 +66,13 @@
     {
       "id": "flash-nuke",
       "name": "Flash Nuke",
-      "description": "Erases the RP2350 flash memory \u2014 use to factory-reset the Pico",
+      "description": "Erases the RP2350 flash memory — use to factory-reset the Pico",
       "author": {
-        "name": "Raspberry Pi",
-        "github": "raspberrypi",
-        "url": "https://www.raspberrypi.com/"
+        "name": "Gadgetoid / Raspberry Pi",
+        "github": "Gadgetoid",
+        "url": "https://github.com/Gadgetoid/pico-universal-flash-nuke"
       },
-      "repo": "https://github.com/raspberrypi/pico-examples",
+      "repo": "https://github.com/Gadgetoid/pico-universal-flash-nuke",
       "license": "BSD-3-Clause",
       "tier": "system",
       "category": "system",
@@ -83,16 +83,23 @@
         "nuke",
         "system"
       ],
-      "sdFilename": "universal_flash_nuke.uf2",
-      "alwaysInstalled": true,
       "releases": [
+        {
+          "version": "2.0.0",
+          "firmwareCompat": "0.4",
+          "date": "2026-03-24",
+          "sha256": "6844e23a76f7be4d2dc1b94657db0a3db6f17e44e47ededbb95ff7663e83e6ea",
+          "size": 27136,
+          "changelog": "Rebuilt with PICO_COPY_TO_RAM — works with Picoboot WebUSB (App Manager) and BOOTSEL drag-and-drop",
+          "cdnPath": "apps/flash-nuke/flash-nuke-2.0.0.uf2"
+        },
         {
           "version": "1.0.0",
           "firmwareCompat": "0.4",
           "date": "2026-03-23",
           "sha256": "3e26888f1393bee4fd0cc6a5191be470910c838feab751cba6c5fa254e9131b6",
           "size": 28160,
-          "changelog": "Initial seed binary",
+          "changelog": "Initial seed binary (PICO_NO_FLASH — BOOTSEL only, not compatible with Picoboot WebUSB)",
           "cdnPath": "apps/flash-nuke/flash-nuke-1.0.0.uf2"
         }
       ]
@@ -193,7 +200,7 @@
           "date": "2026-03-23",
           "sha256": "d9b421c786cfadd8d03ab843718a9f3d785f828ffc1fdbb141935898030592d7",
           "size": 168960,
-          "changelog": "RAM-targeted (0x20000000). For SD card \u2014 bootloader loads into RAM.",
+          "changelog": "RAM-targeted (0x20000000). For SD card — bootloader loads into RAM.",
           "cdnPath": "apps/tusb-msc-pico/tusb-msc-pico-1.0.0.uf2"
         }
       ]
