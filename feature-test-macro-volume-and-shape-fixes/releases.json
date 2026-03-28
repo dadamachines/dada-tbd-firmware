@@ -14,5 +14,6 @@
       "webuiVersion": "0.4.0",
       "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
     }
-  ]
+  ],
+  "picoVersion": "feature-test-macro-volume-and-shape-fixes"
 }
