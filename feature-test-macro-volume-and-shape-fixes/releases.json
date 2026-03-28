@@ -1,0 +1,18 @@
+{
+  "channel": "feature-test-macro-volume-and-shape-fixes",
+  "latest": "feature-test-macro-volume-and-shape-fixes",
+  "versions": [
+    {
+      "tag": "feature-test-macro-volume-and-shape-fixes",
+      "timestamp": "2026-03-28T17:32:34Z",
+      "files": {
+        "unified": "feature-test-macro-volume-and-shape-fixes/p4/dada-tbd-16-feature-test-macro-volume-and-shape-fixes-unified.bin",
+        "sdcard": "feature-test-macro-volume-and-shape-fixes/p4/dada-tbd-16-feature-test-macro-volume-and-shape-fixes-sd.zip",
+        "hash": "feature-test-macro-volume-and-shape-fixes/p4/dada-tbd-16-feature-test-macro-volume-and-shape-fixes-sd-hash.txt",
+        "pico": "feature-test-macro-volume-and-shape-fixes/pico/dada-tbd-16-feature-test-macro-volume-and-shape-fixes-pico.uf2"
+      },
+      "webuiVersion": "0.4.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
+    }
+  ]
+}
