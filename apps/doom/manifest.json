@@ -1,0 +1,30 @@
+{
+  "id": "doom",
+  "name": "Doom",
+  "description": "Doom (1993) running on the TBD-16 RP2350 with OPL music and sound through the P4 codec",
+  "author": {
+    "name": "dadamachines",
+    "github": "dadamachines"
+  },
+  "repo": "https://github.com/dadamachines/dada-tbd-doom",
+  "license": "GPL-2.0",
+  "tier": "official",
+  "category": "utility",
+  "tags": [
+    "game",
+    "doom",
+    "retro"
+  ],
+  "sdFilename": "doom.uf2",
+  "releases": [
+    {
+      "version": "1.0.0",
+      "firmwareCompat": "0.4",
+      "date": "2026-03-28",
+      "sha256": "dc0806337dbe4c65ec0f5c6eab9255090bbc9c733ec0fded7469ff46331ee5aa",
+      "size": 527360,
+      "changelog": "Initial release — Doom on TBD-16 with OPL music, 15 dithering modes, OLED display",
+      "cdnPath": "apps/doom/doom-1.0.0.uf2"
+    }
+  ]
+}
