@@ -1,0 +1,18 @@
+{
+  "channel": "feature-test-dada-doom",
+  "latest": "feature-test-dada-doom",
+  "versions": [
+    {
+      "tag": "feature-test-dada-doom",
+      "timestamp": "2026-03-30T18:55:12Z",
+      "files": {
+        "unified": "feature-test-dada-doom/p4/dada-tbd-16-feature-test-dada-doom-unified.bin",
+        "sdcard": "feature-test-dada-doom/p4/dada-tbd-16-feature-test-dada-doom-sd.zip",
+        "hash": "feature-test-dada-doom/p4/dada-tbd-16-feature-test-dada-doom-sd-hash.txt",
+        "pico": "feature-test-dada-doom/pico/dada-tbd-16-feature-test-dada-doom-pico.uf2"
+      },
+      "webuiVersion": "0.4.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
+    }
+  ]
+}
