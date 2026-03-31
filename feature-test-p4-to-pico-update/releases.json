@@ -1,0 +1,18 @@
+{
+  "channel": "feature-test-p4-to-pico-update",
+  "latest": "feature-test-p4-to-pico-update",
+  "versions": [
+    {
+      "tag": "feature-test-p4-to-pico-update",
+      "timestamp": "2026-03-31T21:07:59Z",
+      "files": {
+        "unified": "feature-test-p4-to-pico-update/p4/dada-tbd-16-feature-test-p4-to-pico-update-unified.bin",
+        "sdcard": "feature-test-p4-to-pico-update/p4/dada-tbd-16-feature-test-p4-to-pico-update-sd.zip",
+        "hash": "feature-test-p4-to-pico-update/p4/dada-tbd-16-feature-test-p4-to-pico-update-sd-hash.txt",
+        "pico": "feature-test-p4-to-pico-update/pico/dada-tbd-16-feature-test-p4-to-pico-update-pico.uf2"
+      },
+      "webuiVersion": "0.4.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
+    }
+  ]
+}
