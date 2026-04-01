@@ -1,10 +1,16 @@
 {
-  "version": "0.4.0",
-  "date": "2026-03-23",
-  "description": "Full WebUI + data migration: .jsn→.json rename (all sp/macro/preset files), CI pipeline, repo cleanup",
-  "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.4.0.zip",
-  "size": 1059158,
+  "version": "0.4.5",
+  "date": "2026-04-01",
+  "description": "Full WebUI update (CI-generated)",
+  "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.4.5.zip",
+  "size": 1049832,
   "versions": [
+    {
+      "version": "0.4.0",
+      "date": "2026-03-23",
+      "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.4.0.zip",
+      "description": "Full WebUI + data migration: .jsn→.json rename (all sp/macro/preset files), CI pipeline, repo cleanup"
+    },
     {
       "version": "0.3.5",
       "date": "2026-03-19",
