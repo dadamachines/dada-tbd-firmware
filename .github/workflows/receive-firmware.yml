@@ -83,11 +83,26 @@ jobs:
           TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           MANIFEST="$CHANNEL/releases.json"
 
-          # Find the pico file for this tag (if it exists)
+          # Find the pico file for this tag (if it exists), falling back to latest
           PICO_PATH=""
+          PICO_BIN_PATH=""
           PICO_FILE=$(ls -1 "$CHANNEL/pico/${DEV}-${TAG}-pico.uf2" 2>/dev/null | head -1)
           if [ -n "$PICO_FILE" ]; then
             PICO_PATH="$PICO_FILE"
+            # Check for matching .bin
+            BIN_FILE=$(ls -1 "$CHANNEL/pico/${DEV}-${TAG}-pico.bin" 2>/dev/null | head -1)
+            [ -n "$BIN_FILE" ] && PICO_BIN_PATH="$BIN_FILE"
+          else
+            # No pico for this exact tag — use latest from manifest picoVersion
+            if [ -f "$MANIFEST" ]; then
+              LATEST_PICO_VER=$(jq -r '.picoVersion // empty' "$MANIFEST")
+              if [ -n "$LATEST_PICO_VER" ]; then
+                LP=$(ls -1 "$CHANNEL/pico/${DEV}-${LATEST_PICO_VER}-pico.uf2" 2>/dev/null | head -1)
+                [ -n "$LP" ] && PICO_PATH="$LP"
+                LB=$(ls -1 "$CHANNEL/pico/${DEV}-${LATEST_PICO_VER}-pico.bin" 2>/dev/null | head -1)
+                [ -n "$LB" ] && PICO_BIN_PATH="$LB"
+              fi
+            fi
           fi
 
           # ── WebUI update package ──
@@ -147,9 +162,11 @@ jobs:
               --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
               --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
               --arg pico "$PICO_PATH" \
+              --arg picoBin "$PICO_BIN_PATH" \
               --arg wver "$WEBUI_VERSION" \
               --arg wupd "$WEBUI_UPDATE_PATH" \
-              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico}, webuiVersion: $wver, webuiUpdate: $wupd}')
+              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico, picoBin: $picoBin}, webuiVersion: $wver, webuiUpdate: $wupd}
+               | if .files.picoBin == "" then del(.files.picoBin) else . end')
           else
             NEW_ENTRY=$(jq -n \
               --arg tag "$TAG" \
@@ -158,7 +175,9 @@ jobs:
               --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
               --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
               --arg pico "$PICO_PATH" \
-              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico}}')
+              --arg picoBin "$PICO_BIN_PATH" \
+              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico, picoBin: $picoBin}}
+               | if .files.picoBin == "" then del(.files.picoBin) else . end')
           fi
 
           if [ -f "$MANIFEST" ]; then

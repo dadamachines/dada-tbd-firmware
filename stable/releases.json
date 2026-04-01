@@ -10,7 +10,8 @@
         "unified": "stable/p4/dada-tbd-16-v0.4.6-unified.bin",
         "sdcard": "stable/p4/dada-tbd-16-v0.4.6-sd.zip",
         "hash": "stable/p4/dada-tbd-16-v0.4.6-sd-hash.txt",
-        "pico": "stable/pico/dada-tbd-16-v0.4.6-pico.uf2"
+        "pico": "stable/pico/dada-tbd-16-v0.4.6-pico.uf2",
+        "picoBin": "stable/pico/dada-tbd-16-v0.4.6-pico.bin"
       },
       "webuiVersion": "0.4.6",
       "webuiUpdate": "webui-updates/webui-update-v0.4.6.zip"
@@ -35,8 +36,8 @@
         "unified": "stable/p4/dada-tbd-16-v0.4.2-unified.bin",
         "sdcard": "stable/p4/dada-tbd-16-v0.4.2-sd.zip",
         "hash": "stable/p4/dada-tbd-16-v0.4.2-sd-hash.txt",
-        "pico": "stable/pico/dada-tbd-16-v0.4.5-pico.uf2",
-        "picoBin": "stable/pico/dada-tbd-16-v0.4.5-pico.bin"
+        "pico": "stable/pico/dada-tbd-16-v0.4.6-pico.uf2",
+        "picoBin": "stable/pico/dada-tbd-16-v0.4.6-pico.bin"
       },
       "webuiVersion": "0.4.0",
       "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
@@ -48,7 +49,8 @@
         "unified": "stable/p4/dada-tbd-16-v0.4.1-unified.bin",
         "sdcard": "stable/p4/dada-tbd-16-v0.4.1-sd.zip",
         "hash": "stable/p4/dada-tbd-16-v0.4.1-sd-hash.txt",
-        "pico": "stable/pico/dada-tbd-16-v0.4.1-pico.uf2"
+        "pico": "stable/pico/dada-tbd-16-v0.4.6-pico.uf2",
+        "picoBin": "stable/pico/dada-tbd-16-v0.4.6-pico.bin"
       },
       "webuiVersion": "0.4.0",
       "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
