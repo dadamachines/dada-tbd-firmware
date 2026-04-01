@@ -1,7 +1,7 @@
 {
   "channel": "stable",
   "latest": "v0.4.5",
-  "picoVersion": "v0.4.5",
+  "picoVersion": "v0.4.6",
   "versions": [
     {
       "tag": "v0.4.5",
@@ -10,7 +10,8 @@
         "unified": "stable/p4/dada-tbd-16-v0.4.5-unified.bin",
         "sdcard": "stable/p4/dada-tbd-16-v0.4.5-sd.zip",
         "hash": "stable/p4/dada-tbd-16-v0.4.5-sd-hash.txt",
-        "pico": "stable/pico/dada-tbd-16-v0.4.5-pico.uf2"
+        "pico": "stable/pico/dada-tbd-16-v0.4.6-pico.uf2",
+        "picoBin": "stable/pico/dada-tbd-16-v0.4.6-pico.bin"
       },
       "webuiVersion": "0.4.5",
       "webuiUpdate": "webui-updates/webui-update-v0.4.5.zip"
