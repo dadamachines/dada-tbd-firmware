@@ -15,5 +15,6 @@
       "webuiVersion": "0.4.6",
       "webuiUpdate": "webui-updates/webui-update-v0.4.6.zip"
     }
-  ]
+  ],
+  "picoVersion": "feature-test-storage-arch-refactor"
 }
