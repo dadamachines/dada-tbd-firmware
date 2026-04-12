@@ -1,8 +1,22 @@
 {
   "channel": "stable",
-  "latest": "v0.4.7",
+  "latest": "v0.5.0-rc",
   "picoVersion": "v0.4.6",
   "versions": [
+    {
+      "tag": "v0.5.0-rc",
+      "timestamp": "2026-04-12T12:51:52Z",
+      "files": {
+        "unified": "stable/p4/dada-tbd-16-v0.5.0-rc-unified.bin",
+        "app": "stable/p4/dada-tbd-16-v0.5.0-rc-app.bin",
+        "sdcard": "stable/p4/dada-tbd-16-v0.5.0-rc-sd.zip",
+        "hash": "stable/p4/dada-tbd-16-v0.5.0-rc-sd-hash.txt",
+        "pico": "stable/pico/dada-tbd-16-v0.4.6-pico.uf2",
+        "picoBin": "stable/pico/dada-tbd-16-v0.4.6-pico.bin"
+      },
+      "webuiVersion": "0.5.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
+    },
     {
       "tag": "v0.4.7",
       "timestamp": "2026-04-06T16:50:53Z",
@@ -68,5 +82,6 @@
       "webuiVersion": "0.4.0",
       "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
     }
-  ]
+  ],
+  "p4Version": "v0.5.0-rc"
 }

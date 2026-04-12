@@ -3,7 +3,7 @@
   "date": "2026-04-12",
   "description": "Unified System Updater: channel selector with feature-test support, channel-aware version checks, P4 OTA from CDN, factory data versioning, settings backup/restore",
   "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.5.0.zip",
-  "size": 323827,
+  "size": 1120770,
   "versions": [
     {
       "version": "0.4.0",
