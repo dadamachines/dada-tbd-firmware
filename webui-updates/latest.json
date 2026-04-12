@@ -1,16 +1,10 @@
 {
-  "version": "0.4.6",
-  "date": "2026-04-01",
-  "description": "Full WebUI update (CI-generated)",
-  "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.4.6.zip",
-  "size": 1050051,
+  "version": "0.5.0",
+  "date": "2026-04-12",
+  "description": "Unified System Updater: channel selector with feature-test support, channel-aware version checks, P4 OTA from CDN, MAJOR.MINOR compatibility warnings",
+  "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.5.0.zip",
+  "size": 323768,
   "versions": [
-    {
-      "version": "0.4.5",
-      "date": "2026-04-01",
-      "url": "https://dadamachines.github.io/dada-tbd-firmware/webui-updates/webui-update-v0.4.5.zip",
-      "description": "Full WebUI update (CI-generated)"
-    },
     {
       "version": "0.4.0",
       "date": "2026-03-23",
