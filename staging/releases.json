@@ -4,9 +4,10 @@
   "versions": [
     {
       "tag": "staging-v0.4.2-43",
-      "timestamp": "2026-03-30T21:17:53Z",
+      "timestamp": "2026-04-12T10:13:47Z",
       "files": {
         "unified": "staging/p4/dada-tbd-16-staging-v0.4.2-43-unified.bin",
+        "app": "staging/p4/dada-tbd-16-staging-v0.4.2-43-app.bin",
         "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.2-43-sd.zip",
         "hash": "staging/p4/dada-tbd-16-staging-v0.4.2-43-sd-hash.txt",
         "pico": "staging/pico/dada-tbd-16-staging-v0.0.0-413-9e7d617-pico.uf2"
@@ -27,5 +28,6 @@
       "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
     }
   ],
-  "picoVersion": "staging-v0.0.0-413-9e7d617"
+  "picoVersion": "staging-v0.0.0-413-9e7d617",
+  "p4Version": "staging-v0.4.2-43"
 }
