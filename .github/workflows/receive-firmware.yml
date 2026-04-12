@@ -44,11 +44,17 @@ jobs:
           # ── Device prefix: all CDN binaries self-identify as TBD-16 ──
           DEV="dada-tbd-16"
 
-          # ── Unified image (the only P4 flash binary on CDN) ──
+          # ── Unified image (full flash: bootloader+partitions+app at offset 0x0) ──
           UNIFIED_SRC=$(find incoming/ -name '*-unified.bin' -print -quit)
           UNIFIED_NAME="${DEV}-${TAG}-unified.bin"
           if [ -n "$UNIFIED_SRC" ]; then
             cp -f "$UNIFIED_SRC" "$P4/$UNIFIED_NAME"
+          fi
+
+          # ── Standalone app binary (OTA-compatible: starts with app image header) ──
+          APP_NAME="${DEV}-${TAG}-app.bin"
+          if [ -f "incoming/build/dada-tbd.bin" ]; then
+            cp -f "incoming/build/dada-tbd.bin" "$P4/$APP_NAME"
           fi
 
           # ── SD card image (versioned filenames) ──
@@ -154,45 +160,53 @@ jobs:
           fi
 
           # ── Build releases.json entry ──
+          # Determine app path for releases.json (empty string if file wasn't placed)
+          APP_FILE_PATH=""
+          [ -f "$P4/$APP_NAME" ] && APP_FILE_PATH="$P4/$APP_NAME"
+
           if [ -n "$WEBUI_VERSION" ]; then
             NEW_ENTRY=$(jq -n \
               --arg tag "$TAG" \
               --arg ts "$TIMESTAMP" \
               --arg unified "$P4/$UNIFIED_NAME" \
+              --arg app "$APP_FILE_PATH" \
               --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
               --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
               --arg pico "$PICO_PATH" \
               --arg picoBin "$PICO_BIN_PATH" \
               --arg wver "$WEBUI_VERSION" \
               --arg wupd "$WEBUI_UPDATE_PATH" \
-              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico, picoBin: $picoBin}, webuiVersion: $wver, webuiUpdate: $wupd}
-               | if .files.picoBin == "" then del(.files.picoBin) else . end')
+              '{tag: $tag, timestamp: $ts, files: {unified: $unified, app: $app, sdcard: $sdcard, hash: $hash, pico: $pico, picoBin: $picoBin}, webuiVersion: $wver, webuiUpdate: $wupd}
+               | if .files.picoBin == "" then del(.files.picoBin) else . end
+               | if .files.app == "" then del(.files.app) else . end')
           else
             NEW_ENTRY=$(jq -n \
               --arg tag "$TAG" \
               --arg ts "$TIMESTAMP" \
               --arg unified "$P4/$UNIFIED_NAME" \
+              --arg app "$APP_FILE_PATH" \
               --arg sdcard "$P4/${DEV}-${TAG}-sd.zip" \
               --arg hash "$P4/${DEV}-${TAG}-sd-hash.txt" \
               --arg pico "$PICO_PATH" \
               --arg picoBin "$PICO_BIN_PATH" \
-              '{tag: $tag, timestamp: $ts, files: {unified: $unified, sdcard: $sdcard, hash: $hash, pico: $pico, picoBin: $picoBin}}
-               | if .files.picoBin == "" then del(.files.picoBin) else . end')
+              '{tag: $tag, timestamp: $ts, files: {unified: $unified, app: $app, sdcard: $sdcard, hash: $hash, pico: $pico, picoBin: $picoBin}}
+               | if .files.picoBin == "" then del(.files.picoBin) else . end
+               | if .files.app == "" then del(.files.app) else . end')
           fi
 
           if [ -f "$MANIFEST" ]; then
             TMP=$(mktemp)
             jq --arg tag "$TAG" --argjson entry "$NEW_ENTRY" \
-              '.latest = $tag | .versions = ([$entry] + [.versions[] | select(.tag != $tag)])' \
+              '.latest = $tag | .p4Version = $tag | .versions = ([$entry] + [.versions[] | select(.tag != $tag)])' \
               "$MANIFEST" > "$TMP" && mv "$TMP" "$MANIFEST"
           else
             jq -n --arg ch "$CHANNEL" --arg tag "$TAG" --argjson entry "$NEW_ENTRY" \
-              '{channel: $ch, latest: $tag, versions: [$entry]}' > "$MANIFEST"
+              '{channel: $ch, latest: $tag, p4Version: $tag, versions: [$entry]}' > "$MANIFEST"
           fi
 
           # ── Clean up legacy files ──
           rm -f "$CHANNEL/latest.json"
-          rm -f "$P4/dada-tbd.bin" "$P4/bootloader.bin" "$P4/partition-table.bin"
+          rm -f "$P4/bootloader.bin" "$P4/partition-table.bin"
           rm -f "$P4/ota_data_initial.bin" "$P4/tusb_msc.bin"
           rm -f "$P4/${DEV}-app.bin" "$P4/${DEV}-bootloader.bin"
           rm -f "$P4/${DEV}-partitions.bin" "$P4/${DEV}-otadata.bin"
