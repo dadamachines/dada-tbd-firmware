@@ -1,0 +1,20 @@
+{
+  "channel": "feature-test-screenshot-tool-v2",
+  "latest": "feature-test-screenshot-tool-v2",
+  "p4Version": "feature-test-screenshot-tool-v2",
+  "versions": [
+    {
+      "tag": "feature-test-screenshot-tool-v2",
+      "timestamp": "2026-04-13T16:12:41Z",
+      "files": {
+        "unified": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-unified.bin",
+        "app": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-app.bin",
+        "sdcard": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-sd.zip",
+        "hash": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-sd-hash.txt",
+        "pico": "feature-test-screenshot-tool-v2/pico/dada-tbd-16-feature-test-screenshot-tool-v2-pico.uf2"
+      },
+      "webuiVersion": "0.5.1",
+      "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+    }
+  ]
+}
