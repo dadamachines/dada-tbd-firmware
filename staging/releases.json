@@ -10,8 +10,8 @@
         "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-14-app.bin",
         "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-14-sd.zip",
         "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-14-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-4-981a075-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-4-981a075-pico.bin"
+        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-5-d26246d-pico.uf2",
+        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-5-d26246d-pico.bin"
       },
       "webuiVersion": "0.5.1",
       "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
@@ -197,6 +197,6 @@
       "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
     }
   ],
-  "picoVersion": "staging-v0.5.0-rc-4-981a075",
+  "picoVersion": "staging-v0.5.0-rc-5-d26246d",
   "p4Version": "staging-v0.5.0-rc-14"
 }
