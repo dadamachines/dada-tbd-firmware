@@ -1,104 +1,104 @@
 {
-  "channel": "staging",
-  "latest": "staging-v0.5.0-rc-7",
-  "versions": [
-    {
-      "tag": "staging-v0.5.0-rc-7",
-      "timestamp": "2026-04-12T19:05:53Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-unified.bin",
-        "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-app.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.bin"
-      },
-      "webuiVersion": "0.5.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
-    },
-    {
-      "tag": "staging-v0.5.0-rc-6",
-      "timestamp": "2026-04-12T14:31:56Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-unified.bin",
-        "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-app.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.bin"
-      },
-      "webuiVersion": "0.5.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
-    },
-    {
-      "tag": "staging-v0.5.0-rc-3",
-      "timestamp": "2026-04-12T13:33:21Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-unified.bin",
-        "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-app.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.bin"
-      },
-      "webuiVersion": "0.5.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
-    },
-    {
-      "tag": "staging-v0.5.0-rc-1",
-      "timestamp": "2026-04-12T12:52:24Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-unified.bin",
-        "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-app.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.bin"
-      },
-      "webuiVersion": "0.5.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
-    },
-    {
-      "tag": "staging-v0.4.7-40",
-      "timestamp": "2026-04-12T12:40:43Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.4.7-40-unified.bin",
-        "app": "staging/p4/dada-tbd-16-staging-v0.4.7-40-app.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.7-40-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.4.7-40-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.bin"
-      },
-      "webuiVersion": "0.5.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
-    },
-    {
-      "tag": "staging-v0.4.2-43",
-      "timestamp": "2026-04-12T10:13:47Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.4.2-43-unified.bin",
-        "app": "staging/p4/dada-tbd-16-staging-v0.4.2-43-app.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.2-43-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.4.2-43-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.4.5-24-8379b06-pico.uf2",
-        "picoBin": "staging/pico/dada-tbd-16-staging-v0.4.5-24-8379b06-pico.bin"
-      },
-      "webuiVersion": "0.4.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
-    },
-    {
-      "tag": "staging-v0.4.2-41",
-      "timestamp": "2026-03-30T19:14:10Z",
-      "files": {
-        "unified": "staging/p4/dada-tbd-16-staging-v0.4.2-41-unified.bin",
-        "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.2-41-sd.zip",
-        "hash": "staging/p4/dada-tbd-16-staging-v0.4.2-41-sd-hash.txt",
-        "pico": "staging/pico/dada-tbd-16-staging-v0.0.0-413-9e7d617-pico.uf2"
-      },
-      "webuiVersion": "0.4.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.4.0.zip"
-    }
-  ],
-  "picoVersion": "staging-v0.5.0-rc-2-10efd41",
-  "p4Version": "staging-v0.5.0-rc-7"
+    "channel": "staging",
+    "latest": "staging-v0.5.0-rc-7",
+    "versions": [
+        {
+            "tag": "staging-v0.5.0-rc-7",
+            "timestamp": "2026-04-12T19:05:53Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-unified.bin",
+                "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-app.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-7-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.uf2",
+                "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        },
+        {
+            "tag": "staging-v0.5.0-rc-6",
+            "timestamp": "2026-04-12T14:31:56Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-unified.bin",
+                "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-app.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-6-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.uf2",
+                "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-2-10efd41-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        },
+        {
+            "tag": "staging-v0.5.0-rc-3",
+            "timestamp": "2026-04-12T13:33:21Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-unified.bin",
+                "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-app.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-3-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.uf2",
+                "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        },
+        {
+            "tag": "staging-v0.5.0-rc-1",
+            "timestamp": "2026-04-12T12:52:24Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-unified.bin",
+                "app": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-app.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.5.0-rc-1-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.uf2",
+                "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        },
+        {
+            "tag": "staging-v0.4.7-40",
+            "timestamp": "2026-04-12T12:40:43Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.4.7-40-unified.bin",
+                "app": "staging/p4/dada-tbd-16-staging-v0.4.7-40-app.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.7-40-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.4.7-40-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.uf2",
+                "picoBin": "staging/pico/dada-tbd-16-staging-v0.5.0-rc-1-c4968c7-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        },
+        {
+            "tag": "staging-v0.4.2-43",
+            "timestamp": "2026-04-12T10:13:47Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.4.2-43-unified.bin",
+                "app": "staging/p4/dada-tbd-16-staging-v0.4.2-43-app.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.2-43-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.4.2-43-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.4.5-24-8379b06-pico.uf2",
+                "picoBin": "staging/pico/dada-tbd-16-staging-v0.4.5-24-8379b06-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        },
+        {
+            "tag": "staging-v0.4.2-41",
+            "timestamp": "2026-03-30T19:14:10Z",
+            "files": {
+                "unified": "staging/p4/dada-tbd-16-staging-v0.4.2-41-unified.bin",
+                "sdcard": "staging/p4/dada-tbd-16-staging-v0.4.2-41-sd.zip",
+                "hash": "staging/p4/dada-tbd-16-staging-v0.4.2-41-sd-hash.txt",
+                "pico": "staging/pico/dada-tbd-16-staging-v0.0.0-413-9e7d617-pico.uf2"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        }
+    ],
+    "picoVersion": "staging-v0.5.0-rc-2-10efd41",
+    "p4Version": "staging-v0.5.0-rc-7"
 }

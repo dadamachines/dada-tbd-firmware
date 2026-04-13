@@ -1,22 +1,22 @@
 {
-  "channel": "feature-test-storage-arch-refactor",
-  "latest": "feature-test-storage-arch-refactor",
-  "versions": [
-    {
-      "tag": "feature-test-storage-arch-refactor",
-      "timestamp": "2026-04-12T13:40:50Z",
-      "files": {
-        "unified": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-unified.bin",
-        "app": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-app.bin",
-        "sdcard": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-sd.zip",
-        "hash": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-sd-hash.txt",
-        "pico": "feature-test-storage-arch-refactor/pico/dada-tbd-16-feature-test-storage-arch-refactor-pico.uf2",
-        "picoBin": "feature-test-storage-arch-refactor/pico/dada-tbd-16-feature-test-storage-arch-refactor-pico.bin"
-      },
-      "webuiVersion": "0.5.0",
-      "webuiUpdate": "webui-updates/webui-update-v0.5.0.zip"
-    }
-  ],
-  "picoVersion": "feature-test-storage-arch-refactor",
-  "p4Version": "feature-test-storage-arch-refactor"
+    "channel": "feature-test-storage-arch-refactor",
+    "latest": "feature-test-storage-arch-refactor",
+    "versions": [
+        {
+            "tag": "feature-test-storage-arch-refactor",
+            "timestamp": "2026-04-12T13:40:50Z",
+            "files": {
+                "unified": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-unified.bin",
+                "app": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-app.bin",
+                "sdcard": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-sd.zip",
+                "hash": "feature-test-storage-arch-refactor/p4/dada-tbd-16-feature-test-storage-arch-refactor-sd-hash.txt",
+                "pico": "feature-test-storage-arch-refactor/pico/dada-tbd-16-feature-test-storage-arch-refactor-pico.uf2",
+                "picoBin": "feature-test-storage-arch-refactor/pico/dada-tbd-16-feature-test-storage-arch-refactor-pico.bin"
+            },
+            "webuiVersion": "0.5.1",
+            "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+        }
+    ],
+    "picoVersion": "feature-test-storage-arch-refactor",
+    "p4Version": "feature-test-storage-arch-refactor"
 }
