@@ -11,10 +11,12 @@
         "app": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-app.bin",
         "sdcard": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-sd.zip",
         "hash": "feature-test-screenshot-tool-v2/p4/dada-tbd-16-feature-test-screenshot-tool-v2-sd-hash.txt",
-        "pico": "feature-test-screenshot-tool-v2/pico/dada-tbd-16-feature-test-screenshot-tool-v2-pico.uf2"
+        "pico": "feature-test-screenshot-tool-v2/pico/dada-tbd-16-feature-test-screenshot-tool-v2-pico.uf2",
+        "picoBin": "feature-test-screenshot-tool-v2/pico/dada-tbd-16-feature-test-screenshot-tool-v2-pico.bin"
       },
       "webuiVersion": "0.5.1",
       "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
     }
-  ]
+  ],
+  "picoVersion": "feature-test-screenshot-tool-v2"
 }
