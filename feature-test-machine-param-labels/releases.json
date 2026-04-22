@@ -1,0 +1,21 @@
+{
+  "channel": "feature-test-machine-param-labels",
+  "latest": "feature-test-machine-param-labels",
+  "p4Version": "feature-test-machine-param-labels",
+  "versions": [
+    {
+      "tag": "feature-test-machine-param-labels",
+      "timestamp": "2026-04-22T10:47:50Z",
+      "files": {
+        "unified": "feature-test-machine-param-labels/p4/dada-tbd-16-feature-test-machine-param-labels-unified.bin",
+        "app": "feature-test-machine-param-labels/p4/dada-tbd-16-feature-test-machine-param-labels-app.bin",
+        "sdcard": "feature-test-machine-param-labels/p4/dada-tbd-16-feature-test-machine-param-labels-sd.zip",
+        "hash": "feature-test-machine-param-labels/p4/dada-tbd-16-feature-test-machine-param-labels-sd-hash.txt",
+        "pico": "feature-test-machine-param-labels/pico/dada-tbd-16-feature-test-machine-param-labels-pico.uf2",
+        "picoBin": "feature-test-machine-param-labels/pico/dada-tbd-16-feature-test-machine-param-labels-pico.bin"
+      },
+      "webuiVersion": "0.5.1",
+      "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
+    }
+  ]
+}
