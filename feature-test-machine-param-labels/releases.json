@@ -17,5 +17,6 @@
       "webuiVersion": "0.5.1",
       "webuiUpdate": "webui-updates/webui-update-v0.5.1.zip"
     }
-  ]
+  ],
+  "picoVersion": "feature-test-machine-param-labels"
 }
