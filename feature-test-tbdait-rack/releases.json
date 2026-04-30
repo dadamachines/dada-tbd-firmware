@@ -1,0 +1,21 @@
+{
+  "channel": "feature-test-tbdait-rack",
+  "latest": "feature-test-tbdait-rack",
+  "p4Version": "feature-test-tbdait-rack",
+  "versions": [
+    {
+      "tag": "feature-test-tbdait-rack",
+      "timestamp": "2026-04-30T13:08:45Z",
+      "files": {
+        "unified": "feature-test-tbdait-rack/p4/dada-tbd-16-feature-test-tbdait-rack-unified.bin",
+        "app": "feature-test-tbdait-rack/p4/dada-tbd-16-feature-test-tbdait-rack-app.bin",
+        "sdcard": "feature-test-tbdait-rack/p4/dada-tbd-16-feature-test-tbdait-rack-sd.zip",
+        "hash": "feature-test-tbdait-rack/p4/dada-tbd-16-feature-test-tbdait-rack-sd-hash.txt",
+        "pico": "feature-test-tbdait-rack/pico/dada-tbd-16-feature-test-tbdait-rack-pico.uf2",
+        "picoBin": "feature-test-tbdait-rack/pico/dada-tbd-16-feature-test-tbdait-rack-pico.bin"
+      },
+      "webuiVersion": "0.6.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.6.0.zip"
+    }
+  ]
+}
