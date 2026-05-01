@@ -1,0 +1,21 @@
+{
+  "channel": "feature-test-wtosc-rack",
+  "latest": "feature-test-wtosc-rack",
+  "p4Version": "feature-test-wtosc-rack",
+  "versions": [
+    {
+      "tag": "feature-test-wtosc-rack",
+      "timestamp": "2026-05-01T11:14:08Z",
+      "files": {
+        "unified": "feature-test-wtosc-rack/p4/dada-tbd-16-feature-test-wtosc-rack-unified.bin",
+        "app": "feature-test-wtosc-rack/p4/dada-tbd-16-feature-test-wtosc-rack-app.bin",
+        "sdcard": "feature-test-wtosc-rack/p4/dada-tbd-16-feature-test-wtosc-rack-sd.zip",
+        "hash": "feature-test-wtosc-rack/p4/dada-tbd-16-feature-test-wtosc-rack-sd-hash.txt",
+        "pico": "feature-test-wtosc-rack/pico/dada-tbd-16-feature-test-wtosc-rack-pico.uf2",
+        "picoBin": "feature-test-wtosc-rack/pico/dada-tbd-16-feature-test-wtosc-rack-pico.bin"
+      },
+      "webuiVersion": "0.6.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.6.0.zip"
+    }
+  ]
+}
