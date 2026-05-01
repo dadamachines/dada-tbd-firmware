@@ -1,7 +1,21 @@
 {
   "channel": "staging",
-  "latest": "staging-v0.6.0-101",
+  "latest": "staging-v0.6.0-104",
   "versions": [
+    {
+      "tag": "staging-v0.6.0-104",
+      "timestamp": "2026-05-01T11:42:41Z",
+      "files": {
+        "unified": "staging/p4/dada-tbd-16-staging-v0.6.0-104-unified.bin",
+        "app": "staging/p4/dada-tbd-16-staging-v0.6.0-104-app.bin",
+        "sdcard": "staging/p4/dada-tbd-16-staging-v0.6.0-104-sd.zip",
+        "hash": "staging/p4/dada-tbd-16-staging-v0.6.0-104-sd-hash.txt",
+        "pico": "staging/pico/dada-tbd-16-staging-v0.6.0-170-7a62494-pico.uf2",
+        "picoBin": "staging/pico/dada-tbd-16-staging-v0.6.0-170-7a62494-pico.bin"
+      },
+      "webuiVersion": "0.6.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.6.0.zip"
+    },
     {
       "tag": "staging-v0.6.0-101",
       "timestamp": "2026-04-30T17:47:25Z",
@@ -296,5 +310,5 @@
     }
   ],
   "picoVersion": "staging-v0.6.0-170-7a62494",
-  "p4Version": "staging-v0.6.0-101"
+  "p4Version": "staging-v0.6.0-104"
 }
