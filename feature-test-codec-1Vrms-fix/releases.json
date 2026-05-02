@@ -1,0 +1,20 @@
+{
+  "channel": "feature-test-codec-1Vrms-fix",
+  "latest": "feature-test-codec-1Vrms-fix",
+  "p4Version": "feature-test-codec-1Vrms-fix",
+  "versions": [
+    {
+      "tag": "feature-test-codec-1Vrms-fix",
+      "timestamp": "2026-05-02T17:58:56Z",
+      "files": {
+        "unified": "feature-test-codec-1Vrms-fix/p4/dada-tbd-16-feature-test-codec-1Vrms-fix-unified.bin",
+        "app": "feature-test-codec-1Vrms-fix/p4/dada-tbd-16-feature-test-codec-1Vrms-fix-app.bin",
+        "sdcard": "feature-test-codec-1Vrms-fix/p4/dada-tbd-16-feature-test-codec-1Vrms-fix-sd.zip",
+        "hash": "feature-test-codec-1Vrms-fix/p4/dada-tbd-16-feature-test-codec-1Vrms-fix-sd-hash.txt",
+        "pico": "feature-test-codec-1Vrms-fix/pico/dada-tbd-16-feature-test-codec-1Vrms-fix-pico.uf2"
+      },
+      "webuiVersion": "0.6.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.6.0.zip"
+    }
+  ]
+}
