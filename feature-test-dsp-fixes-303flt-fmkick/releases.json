@@ -1,0 +1,20 @@
+{
+  "channel": "feature-test-dsp-fixes-303flt-fmkick",
+  "latest": "feature-test-dsp-fixes-303flt-fmkick",
+  "p4Version": "feature-test-dsp-fixes-303flt-fmkick",
+  "versions": [
+    {
+      "tag": "feature-test-dsp-fixes-303flt-fmkick",
+      "timestamp": "2026-05-03T07:47:30Z",
+      "files": {
+        "unified": "feature-test-dsp-fixes-303flt-fmkick/p4/dada-tbd-16-feature-test-dsp-fixes-303flt-fmkick-unified.bin",
+        "app": "feature-test-dsp-fixes-303flt-fmkick/p4/dada-tbd-16-feature-test-dsp-fixes-303flt-fmkick-app.bin",
+        "sdcard": "feature-test-dsp-fixes-303flt-fmkick/p4/dada-tbd-16-feature-test-dsp-fixes-303flt-fmkick-sd.zip",
+        "hash": "feature-test-dsp-fixes-303flt-fmkick/p4/dada-tbd-16-feature-test-dsp-fixes-303flt-fmkick-sd-hash.txt",
+        "pico": "feature-test-dsp-fixes-303flt-fmkick/pico/dada-tbd-16-feature-test-dsp-fixes-303flt-fmkick-pico.uf2"
+      },
+      "webuiVersion": "0.6.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.6.0.zip"
+    }
+  ]
+}
