@@ -5,7 +5,7 @@
   "versions": [
     {
       "tag": "feature-test-p4-rev3-silicon-2026-05-06",
-      "timestamp": "2026-05-06T19:35:35Z",
+      "timestamp": "2026-05-06T21:15:09Z",
       "files": {
         "unified": "feature-test-p4-rev3-silicon-2026-05-06/p4/dada-tbd-16-feature-test-p4-rev3-silicon-2026-05-06-unified.bin",
         "app": "feature-test-p4-rev3-silicon-2026-05-06/p4/dada-tbd-16-feature-test-p4-rev3-silicon-2026-05-06-app.bin",
