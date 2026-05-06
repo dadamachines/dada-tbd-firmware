@@ -1,0 +1,21 @@
+{
+  "channel": "feature-test-quality-rollup-2026-05-v5",
+  "latest": "feature-test-quality-rollup-2026-05-v5",
+  "p4Version": "feature-test-quality-rollup-2026-05-v5",
+  "versions": [
+    {
+      "tag": "feature-test-quality-rollup-2026-05-v5",
+      "timestamp": "2026-05-06T21:17:03Z",
+      "files": {
+        "unified": "feature-test-quality-rollup-2026-05-v5/p4/dada-tbd-16-feature-test-quality-rollup-2026-05-v5-unified.bin",
+        "app": "feature-test-quality-rollup-2026-05-v5/p4/dada-tbd-16-feature-test-quality-rollup-2026-05-v5-app.bin",
+        "sdcard": "feature-test-quality-rollup-2026-05-v5/p4/dada-tbd-16-feature-test-quality-rollup-2026-05-v5-sd.zip",
+        "hash": "feature-test-quality-rollup-2026-05-v5/p4/dada-tbd-16-feature-test-quality-rollup-2026-05-v5-sd-hash.txt",
+        "pico": "feature-test-quality-rollup-2026-05-v5/pico/dada-tbd-16-feature-test-quality-rollup-2026-05-v5-pico.uf2",
+        "picoBin": "feature-test-quality-rollup-2026-05-v5/pico/dada-tbd-16-feature-test-quality-rollup-2026-05-v5-pico.bin"
+      },
+      "webuiVersion": "0.6.0",
+      "webuiUpdate": "webui-updates/webui-update-v0.6.0.zip"
+    }
+  ]
+}
