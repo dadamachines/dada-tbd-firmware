@@ -29,7 +29,7 @@ jobs:
           name: ${{ github.event.client_payload.artifact_name }}
           path: incoming/
           github-token: ${{ github.event.client_payload.token }}
-          repository: dadamachines/ctag-tbd
+          repository: ${{ github.event.client_payload.source_repo || 'dadamachines/ctag-tbd-dev' }}
           run-id: ${{ github.event.client_payload.run_id }}
 
       - name: Place files in channel directory
