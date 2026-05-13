@@ -1,0 +1,20 @@
+{
+  "channel": "feature-test-ci-smoke",
+  "latest": "feature-test-ci-smoke",
+  "p4Version": "feature-test-ci-smoke",
+  "versions": [
+    {
+      "tag": "feature-test-ci-smoke",
+      "timestamp": "2026-05-13T20:17:51Z",
+      "files": {
+        "unified": "feature-test-ci-smoke/p4/dada-tbd-16-feature-test-ci-smoke-unified.bin",
+        "app": "feature-test-ci-smoke/p4/dada-tbd-16-feature-test-ci-smoke-app.bin",
+        "sdcard": "feature-test-ci-smoke/p4/dada-tbd-16-feature-test-ci-smoke-sd.zip",
+        "hash": "feature-test-ci-smoke/p4/dada-tbd-16-feature-test-ci-smoke-sd-hash.txt",
+        "pico": "feature-test-ci-smoke/pico/dada-tbd-16-feature-test-ci-smoke-pico.uf2"
+      },
+      "webuiVersion": "0.4.6",
+      "webuiUpdate": "webui-updates/webui-update-v0.4.6.zip"
+    }
+  ]
+}
